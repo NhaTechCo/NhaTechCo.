@@ -1,0 +1,29 @@
+# Dependencies
+**/node_modules/
+
+# Next.js
+**/.next/
+**/out/
+
+# Environment and secrets
+.env
+.env*.local
+**/.env
+**/.env*.local
+
+# Runtime data
+**/.data/
+
+# Logs
+*.log
+**/*.log
+
+# Local browser/test artifacts
+frontend/.edge-*/
+frontend/visual-checks/
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
