@@ -49,9 +49,11 @@ export function PremiumHeader() {
             href="#top"
             onClick={(event) => handleNavClick(event, "top")}
           >
-            <span className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-accent via-primary to-coral text-sm text-white shadow-[0_18px_50px_-28px_hsl(var(--primary))]">
-              N
-            </span>
+            <img
+              src="/images/logo.png"
+              alt="NhaTech Co. Logo"
+              className="size-10 rounded-full bg-white object-contain p-1 shadow-[0_18px_50px_-28px_hsl(var(--primary))]"
+            />
             <span className="hidden sm:inline">NhaTech Co.</span>
           </a>
 

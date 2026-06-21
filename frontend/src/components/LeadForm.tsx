@@ -20,8 +20,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { bodyText, headingText, surfaceCard } from "@/lib/contrast";
 import { cn } from "@/lib/utils";
 
-const defaultEndpoint =
-  process.env.NEXT_PUBLIC_BACKEND_URL ?? "http://localhost:4000";
+const defaultEndpoint = (
+  process.env.NEXT_PUBLIC_BACKEND_URL ??
+  (process.env.NODE_ENV === "production" ? "" : "http://localhost:4000")
+).replace(/\/$/, "");
 
 const leadSchema = z.object({
   name: z.string().min(2, "Vui lòng nhập họ tên."),

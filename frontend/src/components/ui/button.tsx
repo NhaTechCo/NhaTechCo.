@@ -15,7 +15,9 @@ export const buttonVariants = cva(
         glass:
           "border border-slate-200/80 bg-white/75 text-slate-900 shadow-[inset_0_1px_0_rgba(255,255,255,.85),0_20px_70px_-48px_rgba(15,23,42,.28)] backdrop-blur-2xl hover:-translate-y-1 hover:border-primary/35 hover:bg-white hover:shadow-[inset_0_1px_0_rgba(255,255,255,.9),0_28px_90px_-48px_hsl(var(--primary)/.3)] dark:border-white/10 dark:bg-white/10 dark:text-white dark:shadow-[inset_0_1px_0_rgba(255,255,255,.15),0_20px_70px_-44px_hsl(var(--primary))] dark:hover:bg-white/15 dark:hover:shadow-[inset_0_1px_0_rgba(255,255,255,.22),0_28px_90px_-42px_hsl(var(--primary))]",
         ghost:
-          "border border-transparent bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-white/[0.08] dark:hover:text-slate-100"
+          "border border-transparent bg-transparent text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-400 dark:hover:bg-white/[0.08] dark:hover:text-slate-100",
+        admin:
+          "border border-cyan-200 bg-gradient-to-br from-cyan-500 to-blue-600 text-white shadow-[0_8px_30px_-12px_rgba(6,182,212,.4)] hover:-translate-y-0.5 hover:from-cyan-400 hover:to-blue-500 hover:shadow-[0_14px_40px_-16px_rgba(6,182,212,.5)]"
       },
       size: {
         default: "h-12",

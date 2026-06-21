@@ -27,3 +27,8 @@ frontend/visual-checks/
 Thumbs.db
 .idea/
 .vscode/
+
+# Deploy artifacts
+*.tar.gz
+/scp
+/tar

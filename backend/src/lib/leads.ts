@@ -1,6 +1,5 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { z } from "zod";
+import { prisma } from "@/lib/prisma";
 
 export const leadSchema = z.object({
   name: z.string().trim().min(2, "Ho ten phai co it nhat 2 ky tu."),
@@ -19,11 +18,8 @@ export type LeadInput = z.infer<typeof leadSchema>;
 
 export type Lead = LeadInput & {
   id: string;
-  createdAt: string;
+  createdAt: Date;
 };
-
-const dataDir = path.join(process.cwd(), ".data");
-const leadsFile = path.join(dataDir, "leads.json");
 
 export function validateLead(input: Record<string, unknown>): LeadInput {
   const result = leadSchema.safeParse(input);
@@ -35,31 +31,26 @@ export function validateLead(input: Record<string, unknown>): LeadInput {
   return result.data;
 }
 
-async function readLeads(): Promise<Lead[]> {
-  try {
-    const raw = await readFile(leadsFile, "utf8");
-    return JSON.parse(raw) as Lead[];
-  } catch {
-    return [];
-  }
-}
-
 export async function createLead(input: Record<string, unknown>): Promise<Lead> {
   const cleanInput = validateLead(input);
-  const lead: Lead = {
-    id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
-    ...cleanInput
-  };
+  const created = await prisma.lead.create({ data: cleanInput });
 
-  await mkdir(dataDir, { recursive: true });
-  const leads = await readLeads();
-  leads.unshift(lead);
-  await writeFile(leadsFile, JSON.stringify(leads, null, 2));
-
-  return lead;
+  return { ...cleanInput, id: created.id, createdAt: created.createdAt };
 }
 
 export async function listLeads(): Promise<Lead[]> {
-  return readLeads();
+  const leads = await prisma.lead.findMany({
+    orderBy: { createdAt: "desc" }
+  });
+
+  return leads.map((lead) => ({
+    id: lead.id,
+    name: lead.name,
+    email: lead.email,
+    company: lead.company,
+    service: lead.service as LeadInput["service"],
+    budget: lead.budget as LeadInput["budget"],
+    message: lead.message,
+    createdAt: lead.createdAt
+  }));
 }

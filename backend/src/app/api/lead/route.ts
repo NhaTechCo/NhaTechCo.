@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getBackendApiKey } from "@/lib/env";
 import { createLead, listLeads } from "@/lib/leads";
+import { getClientIp, rateLimit } from "@/lib/rate-limit";
 import { sendLeadToSlack } from "@/lib/slack";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": process.env.FRONTEND_ORIGIN ?? "http://localhost:3000",
   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type"
+  "Access-Control-Allow-Headers": "Content-Type, x-admin-key"
 };
+
+function isAdmin(request: NextRequest): boolean {
+  return (request.headers.get("x-admin-key") ?? "") === getBackendApiKey();
+}
 
 export async function OPTIONS() {
   return new NextResponse(null, {
@@ -15,7 +21,14 @@ export async function OPTIONS() {
   });
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  if (!isAdmin(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401, headers: corsHeaders }
+    );
+  }
+
   const leads = await listLeads();
 
   return NextResponse.json(
@@ -28,6 +41,18 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const limit = rateLimit(`lead:${getClientIp(request)}`, 5, 10 * 60 * 1000);
+
+  if (!limit.ok) {
+    return NextResponse.json(
+      { ok: false, error: "Ban gui qua nhanh. Vui long thu lai sau it phut." },
+      {
+        status: 429,
+        headers: { ...corsHeaders, "Retry-After": String(limit.retryAfterSeconds) }
+      }
+    );
+  }
+
   try {
     const body = (await request.json()) as Record<string, unknown>;
     const lead = await createLead({
