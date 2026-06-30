@@ -12,15 +12,14 @@ npx prisma generate
 npx prisma migrate deploy
 NODE_OPTIONS="--max-old-space-size=512" npx next build --webpack
 
-echo "==> [2/3] Frontend: cai dependencies, prisma, build"
+echo "==> [2/3] Frontend: cai dependencies, build"
 cd "$ROOT/frontend"
 npm install --no-audit --no-fund
-npx prisma generate
 NODE_OPTIONS="--max-old-space-size=640" npx next build --webpack
 
 echo "==> [3/3] Restart PM2 (chi nhatech, khong dung makeup-backend)"
 cd "$ROOT"
-pm2 restart nhatech-backend nhatech-frontend --update-env
+pm2 reload nhatech-backend nhatech-frontend --update-env
 pm2 save
 
 echo "==> Deploy hoan tat."
