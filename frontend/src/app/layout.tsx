@@ -6,6 +6,8 @@ import {
   Plus_Jakarta_Sans
 } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { Footer } from "@/components/footer";
+import { PremiumHeader } from "@/components/premium-header";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
@@ -36,7 +38,7 @@ const geist = Geist({
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
   (process.env.NODE_ENV === "production"
-    ? "http://160.22.107.119"
+    ? "https://nhatechvn.com"
     : "http://localhost:3000");
 
 export const metadata: Metadata = {
@@ -120,9 +122,15 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${beVietnam.variable} ${inter.variable} ${plusJakarta.variable} ${geist.variable} font-sans antialiased`}
+        className={`${beVietnam.variable} ${inter.variable} ${plusJakarta.variable} ${geist.variable} font-sans antialiased flex min-h-screen flex-col`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <PremiumHeader />
+          <div className="flex-1">
+            {children}
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

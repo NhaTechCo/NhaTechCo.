@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...posts.map((post) => ({
       url: absoluteUrl(`/bai-viet/${post.slug}`),
-      lastModified: post.updatedAt,
+      lastModified: new Date(post.updatedAt),
       changeFrequency: "monthly" as const,
       priority: 0.7
     }))
