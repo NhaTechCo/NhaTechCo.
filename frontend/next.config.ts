@@ -5,15 +5,7 @@ const internalBackendUrl =
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  reactStrictMode: true,
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: `${internalBackendUrl}/api/:path*`
-      }
-    ];
-  }
+  reactStrictMode: true
 };
 
 export default nextConfig;

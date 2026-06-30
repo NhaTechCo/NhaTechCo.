@@ -8,7 +8,7 @@ type RouteContext = {
 
 export async function PUT(request: NextRequest, context: RouteContext) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Frontend Unauthorized" }, { status: 401 });
   }
 
   const { id } = await context.params;
@@ -16,12 +16,14 @@ export async function PUT(request: NextRequest, context: RouteContext) {
   try {
     const post = await updatePost(id, await request.json());
     return NextResponse.json({ post });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("PUT Error:", error);
+    const status = error.message.includes("401") || error.message.includes("Unauthorized") ? 401 : 400;
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Không thể cập nhật bài viết."
       },
-      { status: 400 }
+      { status }
     );
   }
 }

@@ -28,12 +28,9 @@ export default async function BlogIndexPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950">
-      <section className="border-b border-slate-200 bg-white px-4 py-12 sm:px-6 lg:px-8">
+      <section className="border-b border-slate-200 bg-white px-4 pt-16 pb-12 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28 lg:pb-16">
         <div className="mx-auto max-w-6xl">
-          <Link className="text-sm font-bold text-cyan-700" href="/">
-            NhaTech Co.
-          </Link>
-          <div className="mt-6 grid gap-5 md:grid-cols-[1fr_320px] md:items-end">
+          <div className="grid gap-5 md:grid-cols-[1fr_320px] md:items-end">
             <div>
               <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-normal md:text-5xl">
                 Bài viết và góc nhìn sản phẩm số
@@ -68,7 +65,7 @@ export default async function BlogIndexPage() {
                 ) : null}
                 <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
                   <CalendarDays className="size-4" />
-                  {(post.publishedAt ?? post.createdAt).toLocaleDateString("vi-VN")}
+                  {new Date(post.publishedAt ?? post.createdAt).toLocaleDateString("vi-VN")}
                 </div>
                 <h2 className="text-2xl font-bold leading-tight tracking-normal">
                   {post.title}

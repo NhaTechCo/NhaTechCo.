@@ -1,7 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { FileText, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -10,24 +12,33 @@ import { useActiveSection } from "@/hooks/useActiveSection";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { label: "Trang chủ", href: "#top", id: "top" },
-  { label: "Dịch vụ", href: "#services", id: "services" },
-  { label: "Quy trình", href: "#process", id: "process" },
-  { label: "Trải nghiệm", href: "#results", id: "results" },
-  { label: "Liên hệ", href: "#contact", id: "contact" }
+  { label: "Trang chủ", href: "/#top", id: "top" },
+  { label: "Dịch vụ", href: "/#services", id: "services" },
+  { label: "Quy trình", href: "/#process", id: "process" },
+  { label: "Trải nghiệm", href: "/#results", id: "results" },
+  { label: "Liên hệ", href: "/#contact", id: "contact" }
 ];
 
 const navItemIds = navItems.map((item) => item.id);
 
 export function PremiumHeader() {
+  const pathname = usePathname();
   const active = useActiveSection(navItemIds, { defaultId: "top" });
   const [open, setOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   const handleNavClick = (
     event: MouseEvent<HTMLAnchorElement>,
     id: string
   ) => {
+    if (pathname !== "/") {
+      return; // Let standard link navigation happen
+    }
+
     event.preventDefault();
     setOpen(false);
 
@@ -42,11 +53,11 @@ export function PremiumHeader() {
   return (
     <>
       <ScrollToTopButton />
-      <header className="safe-shell sticky top-0 z-50 pt-[calc(.75rem+env(safe-area-inset-top))]">
+      <header className="safe-shell fixed left-0 right-0 top-0 z-50 pt-[calc(.75rem+env(safe-area-inset-top))]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/75 px-3 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/60 dark:shadow-[0_24px_90px_-58px_hsl(var(--primary))]">
           <a
             className="flex min-h-11 items-center gap-3 rounded-full pl-1 pr-3 font-geist text-base font-extrabold text-slate-950 dark:text-white"
-            href="#top"
+            href="/#top"
             onClick={(event) => handleNavClick(event, "top")}
           >
             <img
@@ -69,7 +80,7 @@ export function PremiumHeader() {
                   className={cn(
                     "relative rounded-full px-4 py-2 text-sm font-semibold transition-colors",
                     isActive
-                      ? "text-white"
+                      ? "text-cyan-700 dark:text-white"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
                   )}
                   href={item.href}
@@ -78,7 +89,7 @@ export function PremiumHeader() {
                 >
                   {isActive ? (
                     <motion.span
-                      className="absolute inset-0 rounded-full border border-slate-950 bg-slate-950 shadow-[0_14px_36px_-22px_rgba(15,23,42,.5)] dark:border-white/10 dark:bg-white/10 dark:shadow-[0_0_26px_hsl(var(--primary)/.22)]"
+                      className="absolute inset-0 rounded-full border border-white bg-white shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] dark:border-white/20 dark:bg-white/20"
                       layoutId="active-nav-pill"
                       transition={{ type: "spring", stiffness: 360, damping: 34 }}
                     />
@@ -96,9 +107,15 @@ export function PremiumHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Button asChild variant="glass" size="sm" className="hidden gap-1.5 md:inline-flex">
+              <Link href="/bai-viet">
+                <FileText className="size-3.5" />
+                Bài viết
+              </Link>
+            </Button>
             <ThemeToggle />
             <Button asChild className="hidden sm:inline-flex" variant="premium">
-              <a href="#contact">Tư vấn miễn phí</a>
+              <a href="/#contact" onClick={(event) => handleNavClick(event, "contact")}>Tư vấn miễn phí</a>
             </Button>
             <Button
               aria-label={open ? "Đóng menu" : "Mở menu"}
@@ -138,7 +155,7 @@ export function PremiumHeader() {
                     className={cn(
                       "relative flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold transition-colors",
                       isActive
-                        ? "bg-slate-950 text-white shadow-[0_18px_50px_-32px_rgba(15,23,42,.42)] dark:bg-white/10 dark:text-white dark:shadow-[0_0_30px_hsl(var(--primary)/.14)]"
+                        ? "bg-white text-cyan-700 shadow-sm border border-slate-200 dark:bg-white/20 dark:text-white dark:border-white/10"
                         : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
                     )}
                     href={item.href}
@@ -154,6 +171,17 @@ export function PremiumHeader() {
                   </a>
                 );
               })}
+              <Link
+                className="flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                href="/bai-viet"
+                onClick={() => setOpen(false)}
+              >
+                <span className="flex items-center gap-2">
+                  <FileText className="size-4" />
+                  Bài viết
+                </span>
+                <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
+              </Link>
             </motion.nav>
           </motion.div>
         ) : null}

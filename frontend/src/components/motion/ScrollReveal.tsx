@@ -42,7 +42,7 @@ export function ScrollReveal({
   children,
   className,
   delay = 0,
-  once = false,
+  once = true,
   scale = true,
   viewportMargin = "-80px",
   yOffset = 40,
@@ -98,7 +98,7 @@ export function StaggerContainer({
   children,
   className,
   delay = 0,
-  once = false,
+  once = true,
   viewportMargin = "-80px",
   ...props
 }: StaggerContainerProps) {

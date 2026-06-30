@@ -1,20 +1,7 @@
-import type { Post, PostStatus, Prisma } from "@prisma/client";
+import type { Post, PostPayload } from "@/types/post";
 import { adminFetch, apiFetch } from "@/lib/api";
 
-export type PostPayload = {
-  title: string;
-  slug: string;
-  excerpt: string;
-  coverImage?: string | null;
-  contentJson: Prisma.InputJsonValue;
-  contentHtml: string;
-  status: PostStatus;
-  seoTitle?: string | null;
-  seoDescription?: string | null;
-  focusKeyword?: string | null;
-  canonicalUrl?: string | null;
-  ogImage?: string | null;
-};
+export type { Post, PostPayload };
 
 export async function createPost(payload: PostPayload) {
   const data = await adminFetch<{ post: Post }>("/api/admin/posts", {
@@ -55,4 +42,3 @@ export async function getPublishedPostBySlug(slug: string) {
   const data = await apiFetch<{ post: Post }>(`/api/posts/${slug}`);
   return data.post;
 }
-

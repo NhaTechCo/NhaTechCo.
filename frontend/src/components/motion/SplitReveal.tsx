@@ -19,6 +19,7 @@ type SplitRevealProps = Omit<HTMLMotionProps<"div">, "children"> & {
   right: ReactNode;
   rightClassName?: string;
   viewportMargin?: string;
+  once?: boolean;
 };
 
 export function SplitReveal({
@@ -29,6 +30,7 @@ export function SplitReveal({
   right,
   rightClassName,
   viewportMargin = "0px",
+  once = true,
   ...props
 }: SplitRevealProps) {
   const direction = useScrollDirection();
@@ -89,7 +91,7 @@ export function SplitReveal({
     <motion.div
       className={cn("transform-gpu", className)}
       initial="hidden"
-      viewport={{ amount, margin: viewportMargin, once: false }}
+      viewport={{ amount, margin: viewportMargin, once }}
       whileInView="visible"
       {...props}
     >

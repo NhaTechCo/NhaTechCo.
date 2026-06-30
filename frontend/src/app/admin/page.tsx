@@ -14,9 +14,10 @@ import { Button } from "@/components/ui/button";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getAllPosts } from "@/lib/posts";
 import { loginAction, logoutAction } from "@/app/admin/actions";
+import { AdminPostFilter } from "@/components/cms/admin-post-filter";
 
 type AdminPageProps = {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; q?: string; status?: string }>;
 };
 
 export const metadata = {
@@ -27,15 +28,28 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const isAuthed = await isAdminAuthenticated();
+  const searchParamsAwaited = await searchParams;
 
   if (!isAuthed) {
-    const { error } = await searchParams;
-    return <LoginPanel hasError={error === "1"} />;
+    return <LoginPanel hasError={searchParamsAwaited.error === "1"} />;
   }
 
-  const posts = await getAllPosts();
-  const publishedCount = posts.filter((p) => p.status === "PUBLISHED").length;
-  const draftCount = posts.filter((p) => p.status === "DRAFT").length;
+  const allPosts = await getAllPosts();
+  const publishedCount = allPosts.filter((p) => p.status === "PUBLISHED").length;
+  const draftCount = allPosts.filter((p) => p.status === "DRAFT").length;
+  
+  const q = searchParamsAwaited.q?.toLowerCase() || "";
+  const statusFilter = searchParamsAwaited.status || "ALL";
+
+  let posts = allPosts;
+  if (q) {
+    posts = posts.filter(
+      (p) => p.title.toLowerCase().includes(q) || p.slug.toLowerCase().includes(q)
+    );
+  }
+  if (statusFilter && statusFilter !== "ALL") {
+    posts = posts.filter((p) => p.status === statusFilter);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50/30">
@@ -130,14 +144,17 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
         {/* Posts table */}
         <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
-          <div className="border-b border-slate-100 px-6 py-4">
-            <h2 className="text-lg font-bold text-slate-900">Danh sách bài viết</h2>
-            <p className="mt-0.5 text-sm text-slate-500">
-              Blog hiển thị tại{" "}
-              <Link className="font-medium text-cyan-700 hover:underline" href="/bai-viet">
-                /bai-viet
-              </Link>
-            </p>
+          <div className="border-b border-slate-100 px-6 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900">Danh sách bài viết</h2>
+              <p className="mt-0.5 text-sm text-slate-500">
+                Blog hiển thị tại{" "}
+                <Link className="font-medium text-cyan-700 hover:underline" href="/bai-viet">
+                  /bai-viet
+                </Link>
+              </p>
+            </div>
+            <AdminPostFilter />
           </div>
 
           {posts.length === 0 ? (
@@ -200,7 +217,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                         /{post.slug}
                       </td>
                       <td className="px-6 py-4 text-xs text-slate-500">
-                        {post.updatedAt.toLocaleDateString("vi-VN", {
+                        {new Date(post.updatedAt).toLocaleDateString("vi-VN", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric"

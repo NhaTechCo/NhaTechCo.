@@ -133,10 +133,9 @@ export default function Home() {
     <main className="relative overflow-hidden text-foreground">
       <CosmicBackground />
       <ScrollProgressBar />
-      <PremiumHeader />
-
+      
       <section
-        className="safe-shell relative mx-auto max-w-7xl overflow-hidden pb-16 pt-16 md:pt-20"
+        className="safe-shell relative mx-auto max-w-7xl overflow-hidden pb-12 pt-10 md:pb-16 md:pt-20"
         id="top"
       >
         <div className="aurora-field" />
@@ -149,7 +148,7 @@ export default function Home() {
                 <Sparkles className="size-4" />
                 Website hiện đại · Ứng dụng di động · Dễ dùng mỗi ngày
               </Badge>
-              <h1 className={cn("max-w-[22rem] text-[40px] font-extrabold leading-[0.98] sm:max-w-4xl sm:text-[48px] md:text-[64px] lg:text-[72px]", headingText)}>
+              <h1 className={cn("max-w-[22rem] text-4xl font-extrabold leading-[1.1] sm:max-w-4xl sm:text-[48px] md:text-[64px] lg:text-[72px]", headingText)}>
                 Giải pháp Website, Ứng dụng và Phần mềm giúp doanh nghiệp vận hành tốt hơn
               </h1>
               <p className={cn("mt-6 max-w-[22rem] text-base leading-8 sm:max-w-2xl md:text-lg", bodyText)}>
@@ -194,10 +193,10 @@ export default function Home() {
 
       <LogoMarquee />
 
-      <section className="safe-shell mx-auto max-w-7xl py-20 md:py-28" id="services">
+      <section className="safe-shell mx-auto max-w-7xl py-12 md:py-28" id="services">
         <ScrollReveal className="max-w-3xl">
           <Badge variant="dark">Dịch vụ</Badge>
-          <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+          <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
             Dịch vụ số dành cho doanh nghiệp và cá nhân
           </h2>
           <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
@@ -221,7 +220,7 @@ export default function Home() {
                       <div className="mb-6 grid size-14 place-items-center rounded-2xl border border-cyan-200/80 bg-cyan-50 text-cyan-700 shadow-lg shadow-cyan-200/40 dark:border-cyan-300/20 dark:bg-cyan-400/10 dark:text-cyan-300 dark:shadow-cyan-500/10">
                         <Icon className="size-7" />
                       </div>
-                      <h3 className={cn("text-2xl font-bold leading-tight", headingText)}>
+                      <h3 className={cn("text-xl sm:text-2xl font-bold leading-tight", headingText)}>
                         {service.title}
                       </h3>
                       <p className={cn("mt-4 text-base leading-7", bodyText)}>
@@ -250,13 +249,13 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      <section className="safe-shell mx-auto max-w-7xl py-20 md:py-28" id="results">
+      <section className="safe-shell mx-auto max-w-7xl py-12 md:py-28" id="results">
         <SplitReveal
           className="grid gap-10 lg:grid-cols-[.9fr_1.1fr]"
           left={(
             <>
               <Badge variant="dark">Trải nghiệm</Badge>
-              <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+              <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
                 Trải nghiệm người dùng là ưu tiên đầu tiên
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
@@ -297,7 +296,7 @@ export default function Home() {
                     <p className={cn("text-sm font-semibold", mutedText)}>
                       Bảng theo dõi công việc
                     </p>
-                    <h3 className={cn("text-2xl font-bold", headingText)}>
+                    <h3 className={cn("text-xl sm:text-2xl font-bold", headingText)}>
                       Mức độ dễ sử dụng
                     </h3>
                   </div>
@@ -315,13 +314,13 @@ export default function Home() {
         />
       </section>
 
-      <section className="safe-shell mx-auto max-w-7xl py-20 md:py-28" id="process">
+      <section className="safe-shell mx-auto max-w-7xl py-12 md:py-28" id="process">
         <SplitReveal
           className="grid gap-12 lg:grid-cols-[.86fr_1.14fr]"
           left={(
             <>
               <Badge variant="dark">Quy trình</Badge>
-              <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+              <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
                 Quy trình rõ ràng để bạn dễ theo dõi
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
@@ -342,7 +341,7 @@ export default function Home() {
                       {String(index + 1).padStart(2, "0")}
                     </div>
                     <div className="relative z-10">
-                      <h3 className={cn("text-2xl font-bold leading-tight", headingText)}>
+                      <h3 className={cn("text-xl sm:text-2xl font-bold leading-tight", headingText)}>
                         {step.title}
                       </h3>
                       <p className={cn("mt-2 text-base leading-7", bodyText)}>
@@ -357,7 +356,7 @@ export default function Home() {
         />
       </section>
 
-      <section className="safe-shell mx-auto max-w-7xl py-10">
+      <section className="safe-shell mx-auto max-w-7xl py-6 md:py-10">
         <ScrollReveal>
           <MouseSpotlight
             className={cn(surfaceCard, "relative overflow-hidden p-6 md:p-8")}
@@ -372,7 +371,7 @@ export default function Home() {
                     <Layers3 className="size-4" />
                     Giải pháp
                   </Badge>
-                  <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+                  <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
                     Những sản phẩm NhaTech Co. có thể đồng hành cùng bạn
                   </h2>
                   <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
@@ -399,10 +398,10 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      <section className="safe-shell mx-auto max-w-7xl py-20 md:py-28">
+      <section className="safe-shell mx-auto max-w-7xl py-12 md:py-28">
         <ScrollReveal className="mb-10 max-w-3xl">
           <Badge variant="dark">Đánh giá</Badge>
-          <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+          <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
             Những khách hàng cần sản phẩm dễ hiểu, đẹp và dùng được mỗi ngày
           </h2>
         </ScrollReveal>
@@ -411,7 +410,7 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      <section className="safe-shell mx-auto max-w-7xl pb-24 pt-10 md:pb-32" id="contact">
+      <section className="safe-shell mx-auto max-w-7xl pb-16 pt-12 md:pb-32" id="contact">
         <SplitReveal
           className="grid gap-10 lg:grid-cols-[.9fr_1.1fr] lg:items-start"
           left={(
@@ -420,7 +419,7 @@ export default function Home() {
                 <Workflow className="size-4" />
                 Bắt đầu
               </Badge>
-              <h2 className={cn("mt-5 text-[32px] font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
+              <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
                 Bạn đang có ý tưởng cho website, app hoặc phần mềm riêng?
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
