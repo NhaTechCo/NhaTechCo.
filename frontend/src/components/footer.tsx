@@ -5,8 +5,23 @@ import { usePathname } from "next/navigation";
 import { Facebook, Github, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export function Footer() {
+interface FooterContent {
+  description?: string;
+  email?: string;
+  phone?: string;
+  address?: string;
+}
+
+const defaults: FooterContent = {
+  description: "Thiết kế website, ứng dụng di động, phần mềm quản lý và công cụ thông minh giúp doanh nghiệp vận hành hiệu quả hơn.",
+  email: "caoman26@gmail.com",
+  phone: "034 868 8001",
+  address: "Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam"
+};
+
+export function Footer({ initialContent }: { initialContent?: FooterContent }) {
   const pathname = usePathname();
+  const content = { ...defaults, ...initialContent };
 
   // Hide footer in admin routes
   if (pathname?.startsWith("/admin")) {
@@ -30,8 +45,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm leading-6 text-slate-600 dark:text-slate-400 max-w-xs">
-              Thiết kế website, ứng dụng di động, phần mềm quản lý và công cụ
-              thông minh giúp doanh nghiệp vận hành hiệu quả hơn.
+              {content.description}
             </p>
             <div className="flex gap-4">
               <a href="#" className="text-slate-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
@@ -111,15 +125,15 @@ export function Footer() {
                 <ul role="list" className="mt-6 space-y-4 text-sm text-slate-600 dark:text-slate-400 leading-6">
                   <li className="flex items-start gap-3">
                     <Mail className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>caoman26@gmail.com</span>
+                    <span>{content.email}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Phone className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>034 868 8001</span>
+                    <span>{content.phone}</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <MapPin className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam</span>
+                    <span>{content.address}</span>
                   </li>
                 </ul>
               </div>

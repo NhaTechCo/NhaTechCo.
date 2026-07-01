@@ -7,7 +7,14 @@ import { Button } from "@/components/ui/button";
 import { bodyText, headingText, mutedText, surfaceCard } from "@/lib/contrast";
 import { cn } from "@/lib/utils";
 
-const testimonials = [
+interface TestimonialItem {
+  quote: string;
+  name: string;
+  role: string;
+  rating?: number;
+}
+
+const defaultTestimonials: TestimonialItem[] = [
   {
     quote:
       "NhaTech Co. giúp chúng tôi sắp xếp lại nội dung website rõ ràng hơn. Khách hàng dễ hiểu dịch vụ và liên hệ nhanh hơn.",
@@ -40,7 +47,8 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-export function TestimonialCarousel() {
+export function TestimonialCarousel({ items }: { items?: TestimonialItem[] }) {
+  const testimonials = items && items.length > 0 ? items : defaultTestimonials;
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true
@@ -61,7 +69,7 @@ export function TestimonialCarousel() {
             >
               <div className="relative z-10 mb-4 flex items-center justify-between">
                 <div className="flex items-center gap-0.5 text-amber-400">
-                  {Array.from({ length: item.rating }).map((_, i) => (
+                  {Array.from({ length: item.rating ?? 5 }).map((_, i) => (
                     <Star className="size-4 fill-current" key={i} />
                   ))}
                 </div>

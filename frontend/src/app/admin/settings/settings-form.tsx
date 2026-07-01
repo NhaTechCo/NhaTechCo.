@@ -6,6 +6,7 @@ import { ArrowLeft, CheckCircle2, Key, Lock, Save, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AdminShell } from "@/components/cms/admin-shell";
 
 export function SettingsForm() {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -58,36 +59,8 @@ export function SettingsForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50/30">
-      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-600 to-blue-700 text-sm font-bold text-white shadow-lg shadow-cyan-500/25">
-              N
-            </span>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">
-                NhaTech CMS
-              </p>
-              <p className="text-sm text-slate-500">Cài đặt tài khoản</p>
-            </div>
-          </div>
-          <Button asChild variant="ghost" size="sm" className="gap-2">
-            <Link href="/admin">
-              <ArrowLeft className="size-4" />
-              Quay lại
-            </Link>
-          </Button>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-slate-900">Cài đặt tài khoản</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Quản lý thông tin đăng nhập admin của bạn.
-          </p>
-        </div>
+    <AdminShell title="Cài đặt tài khoản" subtitle="Quản lý thông tin đăng nhập admin của bạn.">
+      <div className="mx-auto max-w-2xl">
 
         {/* Account info card */}
         <div className="mb-6 rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm">
@@ -182,7 +155,7 @@ export function SettingsForm() {
             </Button>
           </div>
         </form>
-      </main>
-    </div>
+      </div>
+    </AdminShell>
   );
 }
