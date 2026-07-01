@@ -111,22 +111,22 @@ export function Footer() {
                 <ul role="list" className="mt-6 space-y-4 text-sm text-slate-600 dark:text-slate-400 leading-6">
                   <li className="flex items-start gap-3">
                     <Mail className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>hello@nhatechvn.com</span>
+                    <span>caoman26@gmail.com</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Phone className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>098 765 4321</span>
+                    <span>034 868 8001</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <MapPin className="size-5 shrink-0 text-slate-400 mt-0.5" />
-                    <span>Hà Nội, Việt Nam</span>
+                    <span>Phường Ngũ Hành Sơn, Đà Nẵng, Việt Nam</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
-        
+
         {/* Copyright */}
         <div className="mt-16 border-t border-slate-200/80 dark:border-white/10 pt-8 sm:mt-20 lg:mt-24">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
