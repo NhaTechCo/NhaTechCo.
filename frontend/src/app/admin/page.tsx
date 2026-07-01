@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import {
   FilePenLine,
   FileText,
+  Globe,
   LogOut,
   PenLine,
   Plus,
@@ -15,6 +16,7 @@ import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { getAllPosts } from "@/lib/posts";
 import { loginAction, logoutAction } from "@/app/admin/actions";
 import { AdminPostFilter } from "@/components/cms/admin-post-filter";
+import { AdminShell } from "@/components/cms/admin-shell";
 
 type AdminPageProps = {
   searchParams: Promise<{ error?: string; q?: string; status?: string }>;
@@ -52,95 +54,55 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50/30">
-      {/* Top bar */}
-      <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-cyan-600 to-blue-700 text-sm font-bold text-white shadow-lg shadow-cyan-500/25">
-              N
-            </span>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700">
-                NhaTech CMS
-              </p>
-              <p className="text-sm text-slate-500">Quản lý nội dung</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <Button
-              aria-label="Tạo bài viết mới"
-              asChild
-              size="sm"
-              title="Tạo bài viết mới"
-              variant="admin"
-              className="gap-2"
-            >
-              <Link href="/admin/posts/new">
-                <Plus className="size-4" />
-                <span className="sm:hidden">Mới</span>
-                <span className="hidden sm:inline">Bài viết mới</span>
-              </Link>
-            </Button>
-            <Button
-              aria-label="Cài đặt"
-              asChild
-              size="sm"
-              title="Cài đặt tài khoản"
-              variant="ghost"
-              className="gap-2 text-slate-500"
-            >
-              <Link href="/admin/settings">
-                <Settings className="size-4" />
-              </Link>
-            </Button>
-            <form action={logoutAction}>
-              <Button
-                aria-label="Đăng xuất"
-                size="sm"
-                title="Đăng xuất"
-                type="submit"
-                variant="ghost"
-                className="gap-2 text-slate-500"
-              >
-                <LogOut className="size-4" />
-              </Button>
-            </form>
+    <AdminShell 
+      title="Tổng quan" 
+      subtitle="Quản lý nội dung bài viết và số liệu"
+      headerActions={
+        <Button
+          aria-label="Tạo bài viết mới"
+          asChild
+          size="sm"
+          title="Tạo bài viết mới"
+          variant="admin"
+          className="gap-2"
+        >
+          <Link href="/admin/posts/new">
+            <Plus className="size-4" />
+            <span className="hidden sm:inline">Bài viết mới</span>
+          </Link>
+        </Button>
+      }
+    >
+      {/* Stats */}
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+          <span className="grid size-12 place-items-center rounded-xl bg-cyan-50 text-cyan-600">
+            <FileText className="size-6" />
+          </span>
+          <div>
+            <p className="text-2xl font-bold text-slate-900">{posts.length}</p>
+            <p className="text-sm text-slate-500">Tổng bài viết</p>
           </div>
         </div>
-      </header>
-
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Stats */}
-        <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <span className="grid size-12 place-items-center rounded-xl bg-cyan-50 text-cyan-600">
-              <FileText className="size-6" />
-            </span>
-            <div>
-              <p className="text-2xl font-bold text-slate-900">{posts.length}</p>
-              <p className="text-sm text-slate-500">Tổng bài viết</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
-              <TrendingUp className="size-6" />
-            </span>
-            <div>
-              <p className="text-2xl font-bold text-slate-900">{publishedCount}</p>
-              <p className="text-sm text-slate-500">Đã xuất bản</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-1">
-            <span className="grid size-12 place-items-center rounded-xl bg-amber-50 text-amber-600">
-              <PenLine className="size-6" />
-            </span>
-            <div>
-              <p className="text-2xl font-bold text-slate-900">{draftCount}</p>
-              <p className="text-sm text-slate-500">Bản nháp</p>
-            </div>
+        <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm">
+          <span className="grid size-12 place-items-center rounded-xl bg-emerald-50 text-emerald-600">
+            <TrendingUp className="size-6" />
+          </span>
+          <div>
+            <p className="text-2xl font-bold text-slate-900">{publishedCount}</p>
+            <p className="text-sm text-slate-500">Đã xuất bản</p>
           </div>
         </div>
+        <div className="flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm sm:col-span-2 lg:col-span-1">
+          <span className="grid size-12 place-items-center rounded-xl bg-amber-50 text-amber-600">
+            <PenLine className="size-6" />
+          </span>
+          <div>
+            <p className="text-2xl font-bold text-slate-900">{draftCount}</p>
+            <p className="text-sm text-slate-500">Bản nháp</p>
+          </div>
+        </div>
+      </div>
 
         {/* Posts table */}
         <div className="overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm">
@@ -238,8 +200,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             </div>
           )}
         </div>
-      </main>
-    </div>
+    </AdminShell>
   );
 }
 

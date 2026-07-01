@@ -14,8 +14,9 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { label: "Trang chủ", href: "/#top", id: "top" },
   { label: "Dịch vụ", href: "/#services", id: "services" },
-  { label: "Quy trình", href: "/#process", id: "process" },
   { label: "Trải nghiệm", href: "/#results", id: "results" },
+  { label: "Quy trình", href: "/#process", id: "process" },
+  { label: "Bài viết", href: "/bai-viet", id: "blog" },
   { label: "Liên hệ", href: "/#contact", id: "contact" }
 ];
 
@@ -33,21 +34,29 @@ export function PremiumHeader() {
 
   const handleNavClick = (
     event: MouseEvent<HTMLAnchorElement>,
-    id: string
+    item: typeof navItems[0]
   ) => {
-    if (pathname !== "/") {
-      return; // Let standard link navigation happen
+    // If it's not a hash link (e.g. /bai-viet), let Next.js handle it naturally
+    if (!item.href.includes("#")) {
+      setOpen(false);
+      return;
     }
 
+    // If we are not on the home page and clicking a hash link, let it navigate to home page first
+    if (pathname !== "/") {
+      return;
+    }
+
+    // We are on home page and clicking a hash link -> smooth scroll
     event.preventDefault();
     setOpen(false);
 
-    document.getElementById(id)?.scrollIntoView({
+    document.getElementById(item.id)?.scrollIntoView({
       behavior: shouldReduceMotion ? "auto" : "smooth",
       block: "start"
     });
 
-    window.history.replaceState(null, "", `#${id}`);
+    window.history.replaceState(null, "", `#${item.id}`);
   };
 
   return (
@@ -55,10 +64,10 @@ export function PremiumHeader() {
       <ScrollToTopButton />
       <header className="safe-shell fixed left-0 right-0 top-0 z-50 pt-[calc(.75rem+env(safe-area-inset-top))]">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/75 px-3 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/60 dark:shadow-[0_24px_90px_-58px_hsl(var(--primary))]">
-          <a
+          <Link
             className="flex min-h-11 items-center gap-3 rounded-full pl-1 pr-3 font-geist text-base font-extrabold text-slate-950 dark:text-white"
             href="/#top"
-            onClick={(event) => handleNavClick(event, "top")}
+            onClick={(event) => handleNavClick(event, navItems[0])}
           >
             <img
               src="/images/logo.png"
@@ -66,17 +75,17 @@ export function PremiumHeader() {
               className="size-10 rounded-full bg-white object-contain p-1 shadow-[0_18px_50px_-28px_hsl(var(--primary))]"
             />
             <span className="hidden sm:inline">NhaTech Co.</span>
-          </a>
+          </Link>
 
           <nav
             aria-label="Điều hướng chính"
             className="relative hidden min-h-11 items-center rounded-full border border-slate-200/80 bg-slate-100/70 p-1 backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 md:flex"
           >
             {navItems.slice(1).map((item) => {
-              const isActive = active === item.id;
+              const isActive = (active === item.id) || (item.id === "blog" && pathname?.startsWith("/bai-viet"));
 
               return (
-                <a
+                <Link
                   className={cn(
                     "relative rounded-full px-4 py-2 text-sm font-semibold transition-colors",
                     isActive
@@ -85,7 +94,7 @@ export function PremiumHeader() {
                   )}
                   href={item.href}
                   key={item.id}
-                  onClick={(event) => handleNavClick(event, item.id)}
+                  onClick={(event) => handleNavClick(event, item)}
                 >
                   {isActive ? (
                     <motion.span
@@ -101,21 +110,15 @@ export function PremiumHeader() {
                       layoutId="active-nav-line"
                     />
                   ) : null}
-                </a>
+                </Link>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="glass" size="sm" className="hidden gap-1.5 md:inline-flex">
-              <Link href="/bai-viet">
-                <FileText className="size-3.5" />
-                Bài viết
-              </Link>
-            </Button>
             <ThemeToggle />
             <Button asChild className="hidden sm:inline-flex" variant="premium">
-              <a href="/#contact" onClick={(event) => handleNavClick(event, "contact")}>Tư vấn miễn phí</a>
+              <Link href="/#contact" onClick={(event) => handleNavClick(event, navItems[5])}>Tư vấn miễn phí</Link>
             </Button>
             <Button
               aria-label={open ? "Đóng menu" : "Mở menu"}
@@ -148,10 +151,10 @@ export function PremiumHeader() {
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             >
               {navItems.map((item) => {
-                const isActive = active === item.id;
+                const isActive = (active === item.id) || (item.id === "blog" && pathname?.startsWith("/bai-viet"));
 
                 return (
-                  <a
+                  <Link
                     className={cn(
                       "relative flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold transition-colors",
                       isActive
@@ -160,7 +163,7 @@ export function PremiumHeader() {
                     )}
                     href={item.href}
                     key={item.id}
-                    onClick={(event) => handleNavClick(event, item.id)}
+                    onClick={(event) => handleNavClick(event, item)}
                   >
                     {item.label}
                     {isActive ? (
@@ -168,20 +171,9 @@ export function PremiumHeader() {
                     ) : (
                       <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
                     )}
-                  </a>
+                  </Link>
                 );
               })}
-              <Link
-                className="flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
-                href="/bai-viet"
-                onClick={() => setOpen(false)}
-              >
-                <span className="flex items-center gap-2">
-                  <FileText className="size-4" />
-                  Bài viết
-                </span>
-                <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
-              </Link>
             </motion.nav>
           </motion.div>
         ) : null}

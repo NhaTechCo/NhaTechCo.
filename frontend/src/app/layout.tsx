@@ -8,6 +8,7 @@ import {
 import { Providers } from "@/components/providers";
 import { Footer } from "@/components/footer";
 import { PremiumHeader } from "@/components/premium-header";
+import { getSiteContent } from "@/lib/site-content";
 import "./globals.css";
 
 const beVietnam = Be_Vietnam_Pro({
@@ -108,11 +109,14 @@ const jsonLd = {
   sameAs: []
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const content = await getSiteContent();
+  const footerContent = (content.footer as Record<string, string>) || undefined;
+
   return (
     <html lang="vi" suppressHydrationWarning>
       <head>
@@ -129,7 +133,7 @@ export default function RootLayout({
           <div className="flex-1">
             {children}
           </div>
-          <Footer />
+          <Footer initialContent={footerContent} />
         </Providers>
       </body>
     </html>
