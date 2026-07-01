@@ -19,7 +19,7 @@ NODE_OPTIONS="--max-old-space-size=640" npx next build --webpack
 
 echo "==> [3/3] Restart PM2 (chi nhatech, khong dung makeup-backend)"
 cd "$ROOT"
-pm2 reload nhatech-backend nhatech-frontend --update-env
+pm2 restart nhatech-backend nhatech-frontend --update-env
 pm2 save
 
 echo "==> Deploy hoan tat."
