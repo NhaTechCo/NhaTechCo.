@@ -16,8 +16,8 @@ const navItems = [
   { label: "Dịch vụ", href: "/#services", id: "services" },
   { label: "Trải nghiệm", href: "/#results", id: "results" },
   { label: "Quy trình", href: "/#process", id: "process" },
+  { label: "Liên hệ", href: "/#contact", id: "contact" },
   { label: "Bài viết", href: "/bai-viet", id: "blog" },
-  { label: "Liên hệ", href: "/#contact", id: "contact" }
 ];
 
 const navItemIds = navItems.map((item) => item.id);
