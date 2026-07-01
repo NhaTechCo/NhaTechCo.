@@ -1,7 +1,6 @@
 "use client";
 
 import { animate } from "motion";
-import { useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
 type AnimatedCounterProps = {
@@ -18,20 +17,60 @@ export function AnimatedCounter({
   decimals = 0
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
   const [display, setDisplay] = useState(0);
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!inView) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const controls = animate(0, value, {
-      duration: 1.2,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (latest) => setDisplay(latest)
-    });
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    return () => controls.stop();
-  }, [inView, value]);
+    let controls: { stop: () => void } | undefined;
+
+    const run = () => {
+      if (started.current) return;
+      started.current = true;
+      if (reduce) {
+        setDisplay(value);
+        return;
+      }
+      controls = animate(0, value, {
+        duration: 1.2,
+        ease: [0.22, 1, 0.36, 1],
+        onUpdate: (latest) => setDisplay(latest)
+      });
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          run();
+          io.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+
+    // An toàn: nếu observer bỏ lỡ (mobile, đã hiển thị sẵn...), kiểm tra lại
+    // sau một nhịp — nếu phần tử đang trong khung nhìn thì vẫn chạy.
+    const fallback = window.setTimeout(() => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        run();
+        io.disconnect();
+      }
+    }, 700);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+      controls?.stop();
+    };
+  }, [value]);
 
   return (
     <span ref={ref}>
