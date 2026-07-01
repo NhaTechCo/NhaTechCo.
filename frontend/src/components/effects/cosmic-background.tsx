@@ -24,17 +24,7 @@ const stars = [
 export function CosmicBackground() {
   return (
     <>
-      <div
-        aria-hidden="true"
-        className="cosmic-background"
-        onPointerMove={(event) => {
-          const x = (event.clientX / window.innerWidth) * 100;
-          const y = (event.clientY / window.innerHeight) * 100;
-
-          event.currentTarget.style.setProperty("--cosmic-x", `${x}%`);
-          event.currentTarget.style.setProperty("--cosmic-y", `${y}%`);
-        }}
-      >
+      <div aria-hidden="true" className="cosmic-background">
         <div className="starfield">
           {stars.map(([x, y, size, opacity, duration], index) => (
             <span

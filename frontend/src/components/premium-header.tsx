@@ -53,24 +53,34 @@ export function PremiumHeader() {
   return (
     <>
       <ScrollToTopButton />
-      <header className="safe-shell fixed left-0 right-0 top-0 z-50 pt-[calc(.75rem+env(safe-area-inset-top))]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 rounded-full border border-slate-200/70 bg-white/75 px-3 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-950/60 dark:shadow-[0_24px_90px_-58px_hsl(var(--primary))]">
+      <header className="safe-shell fixed left-0 right-0 top-0 z-50 pt-[calc(.7rem+env(safe-area-inset-top))]">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden rounded-full border border-slate-200/70 bg-white/80 px-2.5 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.4)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/65 dark:shadow-[0_24px_90px_-58px_hsl(var(--primary))]">
+          {/* Hairline gradient trên viền */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+          />
+
           <a
-            className="flex min-h-11 items-center gap-3 rounded-full pl-1 pr-3 font-geist text-base font-extrabold text-slate-950 dark:text-white"
+            className="group flex min-h-11 items-center gap-2.5 rounded-full pl-1 pr-2 font-geist text-base font-extrabold text-slate-950 dark:text-white"
             href="/#top"
             onClick={(event) => handleNavClick(event, "top")}
           >
-            <img
-              src="/images/logo.png"
-              alt="NhaTech Co. Logo"
-              className="size-10 rounded-full bg-white object-contain p-1 shadow-[0_18px_50px_-28px_hsl(var(--primary))]"
-            />
-            <span className="hidden sm:inline">NhaTech Co.</span>
+            <span className="grid size-10 place-items-center rounded-full gradient-brand p-[2px] shadow-[0_12px_34px_-16px_hsl(var(--primary))] transition-transform group-hover:scale-105">
+              <img
+                src="/images/logo.png"
+                alt="NhaTech Co. Logo"
+                className="size-full rounded-full bg-white object-contain p-1"
+              />
+            </span>
+            <span className="hidden sm:inline">
+              NhaTech<span className="gradient-brand-text"> Co.</span>
+            </span>
           </a>
 
           <nav
             aria-label="Điều hướng chính"
-            className="relative hidden min-h-11 items-center rounded-full border border-slate-200/80 bg-slate-100/70 p-1 backdrop-blur-2xl dark:border-white/10 dark:bg-white/5 md:flex"
+            className="relative hidden min-h-11 items-center rounded-full border border-slate-200/70 bg-slate-100/60 p-1 dark:border-white/10 dark:bg-white/[0.04] md:flex"
           >
             {navItems.slice(1).map((item) => {
               const isActive = active === item.id;
@@ -78,10 +88,10 @@ export function PremiumHeader() {
               return (
                 <a
                   className={cn(
-                    "relative rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                    "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors lg:px-4",
                     isActive
-                      ? "text-cyan-700 dark:text-white"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+                      ? "text-white"
+                      : "text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
                   )}
                   href={item.href}
                   key={item.id}
@@ -89,32 +99,26 @@ export function PremiumHeader() {
                 >
                   {isActive ? (
                     <motion.span
-                      className="absolute inset-0 rounded-full border border-white bg-white shadow-[0_4px_12px_-4px_rgba(0,0,0,0.1)] dark:border-white/20 dark:bg-white/20"
+                      className="absolute inset-0 rounded-full gradient-brand shadow-[0_10px_28px_-12px_hsl(var(--primary))]"
                       layoutId="active-nav-pill"
                       transition={{ type: "spring", stiffness: 360, damping: 34 }}
                     />
                   ) : null}
                   <span className="relative z-10">{item.label}</span>
-                  {isActive ? (
-                    <motion.span
-                      className="absolute bottom-1 left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_18px_hsl(var(--primary))]"
-                      layoutId="active-nav-line"
-                    />
-                  ) : null}
                 </a>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="glass" size="sm" className="hidden gap-1.5 md:inline-flex">
+            <Button asChild variant="glass" size="sm" className="hidden gap-1.5 lg:inline-flex">
               <Link href="/bai-viet">
                 <FileText className="size-3.5" />
                 Bài viết
               </Link>
             </Button>
             <ThemeToggle />
-            <Button asChild className="hidden sm:inline-flex" variant="premium">
+            <Button asChild className="hidden md:inline-flex" variant="premium">
               <a href="/#contact" onClick={(event) => handleNavClick(event, "contact")}>Tư vấn miễn phí</a>
             </Button>
             <Button
@@ -182,6 +186,14 @@ export function PremiumHeader() {
                 </span>
                 <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
               </Link>
+              <Button asChild className="mt-1 w-full" size="lg" variant="premium">
+                <a
+                  href="/#contact"
+                  onClick={(event) => handleNavClick(event, "contact")}
+                >
+                  Tư vấn miễn phí
+                </a>
+              </Button>
             </motion.nav>
           </motion.div>
         ) : null}
