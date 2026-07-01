@@ -41,101 +41,101 @@ import {
   mutedText,
   surfaceCard,
 } from "@/lib/contrast";
+import { getSiteContent } from "@/lib/site-content";
 import { cn } from "@/lib/utils";
 
-const metrics = [
+/* ---------- Fallback data (used when DB is empty) ---------- */
+const defaultMetrics = [
   { value: 48, suffix: "%", label: "khách hàng dễ liên hệ hơn" },
   { value: 6, suffix: " tuần", label: "cho phiên bản đầu tiên" },
   { value: 95, suffix: "+", label: "điểm hài lòng mục tiêu" }
 ];
 
-const bentoServices = [
-  {
-    icon: MonitorSmartphone,
-    title: "Website doanh nghiệp",
-    text: "Trang web giới thiệu thương hiệu, dịch vụ và sản phẩm một cách chuyên nghiệp, dễ đọc và dễ liên hệ.",
-    span: "lg:col-span-2"
-  },
-  {
-    icon: AppWindow,
-    title: "Landing page bán hàng",
-    text: "Trang giới thiệu sản phẩm hoặc chiến dịch, tập trung vào nội dung rõ ràng và hành động chuyển đổi.",
-    span: ""
-  },
-  {
-    icon: Smartphone,
-    title: "Ứng dụng điện thoại",
-    text: "Ứng dụng cho khách hàng, nhân viên hoặc cộng đồng của bạn, được thiết kế để thao tác đơn giản trên di động.",
-    span: ""
-  },
-  {
-    icon: BarChart3,
-    title: "Phần mềm quản lý",
-    text: "Công cụ giúp quản lý đơn hàng, khách hàng, lịch hẹn, nhân sự hoặc công việc nội bộ gọn gàng hơn.",
-    span: "lg:col-span-2"
-  },
-  {
-    icon: Blocks,
-    title: "Ứng dụng máy tính",
-    text: "Giải pháp dành cho các công việc cần thao tác thường xuyên trên máy tính, ổn định và dễ sử dụng.",
-    span: ""
-  },
-  {
-    icon: Code2,
-    title: "Công cụ thông minh",
-    text: "Trợ lý hoặc công cụ giúp tự động hóa những việc lặp lại, hỗ trợ chăm sóc khách hàng và xử lý thông tin nhanh hơn.",
-    span: ""
-  }
+const defaultServices = [
+  { icon: "MonitorSmartphone", title: "Website doanh nghiệp", text: "Trang web giới thiệu thương hiệu, dịch vụ và sản phẩm một cách chuyên nghiệp, dễ đọc và dễ liên hệ.", span: "lg:col-span-2" },
+  { icon: "AppWindow", title: "Landing page bán hàng", text: "Trang giới thiệu sản phẩm hoặc chiến dịch, tập trung vào nội dung rõ ràng và hành động chuyển đổi.", span: "" },
+  { icon: "Smartphone", title: "Ứng dụng điện thoại", text: "Ứng dụng cho khách hàng, nhân viên hoặc cộng đồng của bạn, được thiết kế để thao tác đơn giản trên di động.", span: "" },
+  { icon: "BarChart3", title: "Phần mềm quản lý", text: "Công cụ giúp quản lý đơn hàng, khách hàng, lịch hẹn, nhân sự hoặc công việc nội bộ gọn gàng hơn.", span: "lg:col-span-2" },
+  { icon: "Blocks", title: "Ứng dụng máy tính", text: "Giải pháp dành cho các công việc cần thao tác thường xuyên trên máy tính, ổn định và dễ sử dụng.", span: "" },
+  { icon: "Code2", title: "Công cụ thông minh", text: "Trợ lý hoặc công cụ giúp tự động hóa những việc lặp lại, hỗ trợ chăm sóc khách hàng và xử lý thông tin nhanh hơn.", span: "" }
 ];
 
-const process = [
-  {
-    title: "Lắng nghe nhu cầu",
-    text: "Chúng tôi tìm hiểu mục tiêu, khách hàng và vấn đề bạn đang muốn giải quyết."
-  },
-  {
-    title: "Đề xuất hướng làm",
-    text: "Bạn nhận được định hướng giao diện, tính năng và lộ trình phù hợp trước khi bắt đầu."
-  },
-  {
-    title: "Thiết kế trải nghiệm",
-    text: "Chúng tôi sắp xếp nội dung, màn hình và luồng thao tác sao cho người dùng dễ hiểu nhất."
-  },
-  {
-    title: "Xây dựng sản phẩm",
-    text: "Sản phẩm được hoàn thiện theo từng phần để bạn dễ theo dõi và góp ý."
-  },
-  {
-    title: "Kiểm tra và chỉnh sửa",
-    text: "Chúng tôi kiểm tra trên nhiều thiết bị, tối ưu trải nghiệm và chỉnh sửa các điểm chưa hợp lý."
-  },
-  {
-    title: "Bàn giao và đồng hành",
-    text: "Sau khi hoàn thiện, bạn được hướng dẫn sử dụng và có thể tiếp tục phát triển thêm khi cần."
-  }
+const defaultProcess = [
+  { title: "Lắng nghe nhu cầu", text: "Chúng tôi tìm hiểu mục tiêu, khách hàng và vấn đề bạn đang muốn giải quyết." },
+  { title: "Đề xuất hướng làm", text: "Bạn nhận được định hướng giao diện, tính năng và lộ trình phù hợp trước khi bắt đầu." },
+  { title: "Thiết kế trải nghiệm", text: "Chúng tôi sắp xếp nội dung, màn hình và luồng thao tác sao cho người dùng dễ hiểu nhất." },
+  { title: "Xây dựng sản phẩm", text: "Sản phẩm được hoàn thiện theo từng phần để bạn dễ theo dõi và góp ý." },
+  { title: "Kiểm tra và chỉnh sửa", text: "Chúng tôi kiểm tra trên nhiều thiết bị, tối ưu trải nghiệm và chỉnh sửa các điểm chưa hợp lý." },
+  { title: "Bàn giao và đồng hành", text: "Sau khi hoàn thiện, bạn được hướng dẫn sử dụng và có thể tiếp tục phát triển thêm khi cần." }
 ];
 
-const stack = [
-  "Website hiện đại",
-  "Ứng dụng di động",
-  "Phần mềm quản lý",
-  "Ứng dụng máy tính",
-  "Công cụ thông minh",
-  "Landing page bán hàng",
-  "Quản lý lịch hẹn",
-  "Theo dõi đơn hàng",
-  "Chăm sóc khách hàng",
-  "Báo cáo dễ hiểu"
+const defaultStack = [
+  "Website hiện đại", "Ứng dụng di động", "Phần mềm quản lý",
+  "Ứng dụng máy tính", "Công cụ thông minh", "Landing page bán hàng",
+  "Quản lý lịch hẹn", "Theo dõi đơn hàng", "Chăm sóc khách hàng", "Báo cáo dễ hiểu"
 ];
 
-export default function Home() {
+const iconMap: Record<string, typeof MonitorSmartphone> = {
+  MonitorSmartphone, AppWindow, Smartphone, BarChart3, Blocks, Code2
+};
+const serviceIcons = [MonitorSmartphone, AppWindow, Smartphone, BarChart3, Blocks, Code2];
+const serviceSpans = ["lg:col-span-2", "", "", "lg:col-span-2", "", ""];
+
+export default async function Home() {
+  const content = await getSiteContent();
+
+  // Extract content from DB or use defaults
+  const hero = content.hero as Record<string, unknown> | undefined;
+  const svc = content.services as Record<string, unknown> | undefined;
+  const exp = content.experience as Record<string, unknown> | undefined;
+  const proc = content.process as Record<string, unknown> | undefined;
+  const sol = content.solutions as Record<string, unknown> | undefined;
+  const test = content.testimonials as Record<string, unknown> | undefined;
+  const cta = content.contact as Record<string, unknown> | undefined;
+
+  const heroTitle = (hero?.title as string) || "Giải pháp Website, Ứng dụng và Phần mềm giúp doanh nghiệp vận hành tốt hơn";
+  const heroDesc = (hero?.description as string) || "NhaTech Co. thiết kế những sản phẩm số dễ dùng, đẹp mắt và phù hợp với cách doanh nghiệp của bạn làm việc mỗi ngày.";
+  const heroBadge = (hero?.badge as string) || "Website hiện đại · Ứng dụng di động · Dễ dùng mỗi ngày";
+  const heroCta1 = (hero?.cta1 as string) || "Nhận tư vấn miễn phí";
+  const heroCta2 = (hero?.cta2 as string) || "Xem dịch vụ";
+  const metrics = (hero?.metrics as typeof defaultMetrics) || defaultMetrics;
+
+  const svcTitle = (svc?.title as string) || "Dịch vụ số dành cho doanh nghiệp và cá nhân";
+  const svcDesc = (svc?.description as string) || "NhaTech Co. hỗ trợ từ trang web giới thiệu, ứng dụng điện thoại đến phần mềm quản lý và công cụ giúp công việc hằng ngày gọn gàng hơn.";
+  const svcItems = (svc?.items as Array<{title: string; text: string}>) || defaultServices;
+
+  const expTitle = (exp?.title as string) || "Trải nghiệm người dùng là ưu tiên đầu tiên";
+  const expDesc = (exp?.description as string) || "Một sản phẩm tốt không chỉ là đẹp. Nó phải dễ hiểu, dễ thao tác và giúp người dùng hoàn thành công việc nhanh hơn.";
+  const expHighlights = (exp?.highlights as string[]) || ["Dễ hiểu ngay từ lần đầu", "Đẹp nhưng không rối", "Phù hợp với thói quen sử dụng", "Sẵn sàng phát triển lâu dài"];
+
+  const procTitle = (proc?.title as string) || "Quy trình rõ ràng để bạn dễ theo dõi";
+  const procDesc = (proc?.description as string) || "Mỗi bước đều có mục tiêu cụ thể để bạn biết sản phẩm đang được làm đến đâu, cần góp ý gì và khi nào có thể sử dụng.";
+  const procSteps = (proc?.steps as typeof defaultProcess) || defaultProcess;
+
+  const solTitle = (sol?.title as string) || "Những sản phẩm NhaTech Co. có thể đồng hành cùng bạn";
+  const solDesc = (sol?.description as string) || "Từ một trang giới thiệu đơn giản đến công cụ quản lý riêng, nội dung luôn được sắp xếp để người dùng dễ hiểu và dễ thao tác.";
+  const solTags = (sol?.tags as string[]) || defaultStack;
+
+  const testTitle = (test?.title as string) || "Những khách hàng cần sản phẩm dễ hiểu, đẹp và dùng được mỗi ngày";
+  const testItems = (test?.items as Array<{quote: string; name: string; role: string}>) || undefined;
+
+  const ctaTitle = (cta?.title as string) || "Bạn đang có ý tưởng cho website, app hoặc phần mềm riêng?";
+  const ctaDesc = (cta?.description as string) || "Hãy bắt đầu bằng một buổi trao đổi ngắn. NhaTech Co. sẽ giúp bạn nhìn rõ hướng đi phù hợp trước khi xây dựng.";
+  const ctaBenefits = (cta?.benefits as string[]) || [
+    "Tư vấn cách làm dễ hiểu trước khi báo giá",
+    "Đề xuất phạm vi phù hợp với ngân sách",
+    "Hỗ trợ chỉnh sửa và phát triển thêm khi cần"
+  ];
+
+  const expIcons = [ShieldCheck, AppWindow, Code2, LineChart];
+
   return (
     <main className="relative overflow-hidden text-foreground">
       <CosmicBackground />
       <ScrollProgressBar />
       
       <section
-        className="safe-shell relative mx-auto max-w-7xl overflow-hidden pb-12 pt-10 md:pb-16 md:pt-20"
+        className="safe-shell relative mx-auto max-w-7xl overflow-hidden pb-12 pt-24 md:pb-16 md:pt-28"
         id="top"
       >
         <div className="aurora-field" />
@@ -146,19 +146,18 @@ export default function Home() {
             <div className="max-w-[22rem] sm:max-w-4xl">
               <Badge className="mb-5" variant="dark">
                 <Sparkles className="size-4" />
-                Website hiện đại · Ứng dụng di động · Dễ dùng mỗi ngày
+                {heroBadge}
               </Badge>
               <h1 className={cn("max-w-[22rem] text-4xl font-extrabold leading-[1.1] sm:max-w-4xl sm:text-[48px] md:text-[64px] lg:text-[72px]", headingText)}>
-                Giải pháp Website, Ứng dụng và Phần mềm giúp doanh nghiệp vận hành tốt hơn
+                {heroTitle}
               </h1>
               <p className={cn("mt-6 max-w-[22rem] text-base leading-8 sm:max-w-2xl md:text-lg", bodyText)}>
-                NhaTech Co. thiết kế những sản phẩm số dễ dùng, đẹp mắt và phù
-                hợp với cách doanh nghiệp của bạn làm việc mỗi ngày.
+                {heroDesc}
               </p>
               <div className="mt-8 grid gap-3 sm:flex sm:flex-row">
-                <MagneticButton className="w-full sm:w-auto" href="#contact">Nhận tư vấn miễn phí</MagneticButton>
+                <MagneticButton className="w-full sm:w-auto" href="#contact">{heroCta1}</MagneticButton>
                 <Button asChild className="w-full sm:w-auto" size="lg" variant="glass">
-                  <a href="#services">Xem dịch vụ</a>
+                  <a href="#services">{heroCta2}</a>
                 </Button>
               </div>
               <StaggerContainer className="mt-10 grid gap-3 sm:grid-cols-3" delay={0.12}>
@@ -197,20 +196,20 @@ export default function Home() {
         <ScrollReveal className="max-w-3xl">
           <Badge variant="dark">Dịch vụ</Badge>
           <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-            Dịch vụ số dành cho doanh nghiệp và cá nhân
+            {svcTitle}
           </h2>
           <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
-            NhaTech Co. hỗ trợ từ trang web giới thiệu, ứng dụng điện thoại đến
-            phần mềm quản lý và công cụ giúp công việc hằng ngày gọn gàng hơn.
+            {svcDesc}
           </p>
         </ScrollReveal>
 
         <StaggerContainer className="mt-10 grid auto-rows-fr gap-5 lg:grid-cols-3">
-          {bentoServices.map((service) => {
-            const Icon = service.icon;
+          {svcItems.map((service, i) => {
+            const Icon = serviceIcons[i] || Code2;
+            const span = serviceSpans[i] || "";
 
             return (
-              <StaggerItem className={cn("h-full", service.span)} key={service.title}>
+              <StaggerItem className={cn("h-full", span)} key={service.title}>
                 <MouseSpotlight
                   className={cn(surfaceCard, "animated-border group relative z-0 h-full overflow-hidden p-7")}
                   tilt
@@ -256,28 +255,22 @@ export default function Home() {
             <>
               <Badge variant="dark">Trải nghiệm</Badge>
               <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-                Trải nghiệm người dùng là ưu tiên đầu tiên
+                {expTitle}
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
-                Một sản phẩm tốt không chỉ là đẹp. Nó phải dễ hiểu, dễ thao tác
-                và giúp người dùng hoàn thành công việc nhanh hơn.
+                {expDesc}
               </p>
               <StaggerContainer className="mt-8 grid gap-3 sm:grid-cols-2" delay={0.08}>
-                {[
-                  ["Dễ hiểu ngay từ lần đầu", ShieldCheck],
-                  ["Đẹp nhưng không rối", AppWindow],
-                  ["Phù hợp với thói quen sử dụng", Code2],
-                  ["Sẵn sàng phát triển lâu dài", LineChart]
-                ].map(([label, Icon]) => {
-                  const IconComponent = Icon as typeof ShieldCheck;
+                {expHighlights.map((label, i) => {
+                  const IconComponent = expIcons[i] || ShieldCheck;
                   return (
-                    <StaggerItem key={label as string}>
+                    <StaggerItem key={label}>
                       <MouseSpotlight
                         className={cn(surfaceCard, "relative flex min-h-16 items-center gap-3 overflow-hidden rounded-[24px] px-4 text-sm font-semibold")}
                         tilt
                       >
                         <IconComponent className="relative z-10 size-5 text-primary" />
-                        <span className={cn("relative z-10", headingText)}>{label as string}</span>
+                        <span className={cn("relative z-10", headingText)}>{label}</span>
                       </MouseSpotlight>
                     </StaggerItem>
                   );
@@ -321,17 +314,16 @@ export default function Home() {
             <>
               <Badge variant="dark">Quy trình</Badge>
               <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-                Quy trình rõ ràng để bạn dễ theo dõi
+                {procTitle}
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
-                Mỗi bước đều có mục tiêu cụ thể để bạn biết sản phẩm đang được
-                làm đến đâu, cần góp ý gì và khi nào có thể sử dụng.
+                {procDesc}
               </p>
             </>
           )}
           right={(
             <StaggerContainer className="grid gap-5">
-              {process.map((step, index) => (
+              {procSteps.map((step, index) => (
                 <StaggerItem key={step.title}>
                   <MouseSpotlight
                     className={cn(surfaceCard, "relative grid gap-5 overflow-hidden rounded-[30px] p-5 md:grid-cols-[80px_1fr]")}
@@ -372,17 +364,16 @@ export default function Home() {
                     Giải pháp
                   </Badge>
                   <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-                    Những sản phẩm NhaTech Co. có thể đồng hành cùng bạn
+                    {solTitle}
                   </h2>
                   <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
-                    Từ một trang giới thiệu đơn giản đến công cụ quản lý riêng,
-                    nội dung luôn được sắp xếp để người dùng dễ hiểu và dễ thao tác.
+                    {solDesc}
                   </p>
                 </>
               )}
               right={(
                 <StaggerContainer className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {stack.map((item) => (
+                  {solTags.map((item) => (
                     <StaggerItem key={item}>
                       <div
                         className={cn(featurePill, "flex min-h-16 items-center justify-center px-3 text-center text-sm font-semibold")}
@@ -402,11 +393,11 @@ export default function Home() {
         <ScrollReveal className="mb-10 max-w-3xl">
           <Badge variant="dark">Đánh giá</Badge>
           <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-            Những khách hàng cần sản phẩm dễ hiểu, đẹp và dùng được mỗi ngày
+            {testTitle}
           </h2>
         </ScrollReveal>
         <ScrollReveal delay={0.08}>
-          <TestimonialCarousel />
+          <TestimonialCarousel items={testItems} />
         </ScrollReveal>
       </section>
 
@@ -420,18 +411,13 @@ export default function Home() {
                 Bắt đầu
               </Badge>
               <h2 className={cn("mt-5 text-3xl font-extrabold leading-tight md:text-[40px] lg:text-[48px]", headingText)}>
-                Bạn đang có ý tưởng cho website, app hoặc phần mềm riêng?
+                {ctaTitle}
               </h2>
               <p className={cn("mt-5 text-base leading-8 md:text-lg", bodyText)}>
-                Hãy bắt đầu bằng một buổi trao đổi ngắn. NhaTech Co. sẽ giúp bạn
-                nhìn rõ hướng đi phù hợp trước khi xây dựng.
+                {ctaDesc}
               </p>
               <StaggerContainer className="mt-8 grid gap-3" delay={0.08}>
-                {[
-                  "Tư vấn cách làm dễ hiểu trước khi báo giá",
-                  "Đề xuất phạm vi phù hợp với ngân sách",
-                  "Hỗ trợ chỉnh sửa và phát triển thêm khi cần"
-                ].map((item) => (
+                {ctaBenefits.map((item) => (
                   <StaggerItem hover={false} key={item}>
                     <div className={cn("flex items-center gap-3 text-sm font-semibold", bodyText)}>
                       <CheckCircle2 className="size-5 text-primary" />

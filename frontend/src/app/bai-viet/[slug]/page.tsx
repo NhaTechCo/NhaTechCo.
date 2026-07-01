@@ -63,7 +63,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <main className="min-h-screen bg-white text-slate-950">
       <article>
-        <header className="border-b border-slate-200 bg-slate-50 px-4 pt-16 pb-12 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28 lg:pb-16">
+        <header className="border-b border-slate-200 bg-slate-50 px-4 pt-28 pb-12 sm:px-6 sm:pt-32 lg:px-8 lg:pt-36 lg:pb-16">
           <div className="mx-auto max-w-3xl">
             <Link
               className="inline-flex items-center gap-2 text-sm font-bold text-cyan-700"

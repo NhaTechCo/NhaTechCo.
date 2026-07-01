@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { bodyText, headingText, mutedText, surfaceCard } from "@/lib/contrast";
 import { cn } from "@/lib/utils";
 
-const testimonials = [
+const defaultTestimonials = [
   {
     quote:
       "NhaTech Co. giúp chúng tôi sắp xếp lại nội dung website rõ ràng hơn. Khách hàng dễ hiểu dịch vụ và liên hệ nhanh hơn.",
@@ -28,7 +28,18 @@ const testimonials = [
   }
 ];
 
-export function TestimonialCarousel() {
+interface TestimonialItem {
+  quote: string;
+  name: string;
+  role: string;
+}
+
+interface TestimonialCarouselProps {
+  items?: TestimonialItem[];
+}
+
+export function TestimonialCarousel({ items }: TestimonialCarouselProps) {
+  const testimonials = items && items.length > 0 ? items : defaultTestimonials;
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true
