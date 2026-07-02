@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { FileText, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type MouseEvent } from "react";
@@ -16,7 +16,8 @@ const navItems = [
   { label: "Dịch vụ", href: "/#services", id: "services" },
   { label: "Quy trình", href: "/#process", id: "process" },
   { label: "Trải nghiệm", href: "/#results", id: "results" },
-  { label: "Liên hệ", href: "/#contact", id: "contact" }
+  { label: "Liên hệ", href: "/#contact", id: "contact" },
+  { label: "Bài viết", href: "/bai-viet", id: "blog" }
 ];
 
 const navItemIds = navItems.map((item) => item.id);
@@ -35,6 +36,13 @@ export function PremiumHeader() {
     event: MouseEvent<HTMLAnchorElement>,
     id: string
   ) => {
+    const item = navItems.find((n) => n.id === id);
+    // Link tới trang riêng (vd /bai-viet) -> để Next.js điều hướng bình thường
+    if (item && !item.href.includes("#")) {
+      setOpen(false);
+      return;
+    }
+
     if (pathname !== "/") {
       return; // Let standard link navigation happen
     }
@@ -81,10 +89,12 @@ export function PremiumHeader() {
             className="relative hidden min-h-11 items-center rounded-full border border-slate-200/70 bg-slate-100/60 p-1 dark:border-white/10 dark:bg-white/[0.04] md:flex"
           >
             {navItems.slice(1).map((item) => {
-              const isActive = active === item.id;
+              const isActive =
+                active === item.id ||
+                (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet")));
 
               return (
-                <a
+                <Link
                   className={cn(
                     "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors lg:px-4",
                     isActive
@@ -103,18 +113,12 @@ export function PremiumHeader() {
                     />
                   ) : null}
                   <span className="relative z-10">{item.label}</span>
-                </a>
+                </Link>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-2">
-            <Button asChild variant="glass" size="sm" className="hidden gap-1.5 lg:inline-flex">
-              <Link href="/bai-viet">
-                <FileText className="size-3.5" />
-                Bài viết
-              </Link>
-            </Button>
             <ThemeToggle />
             <Button asChild className="hidden md:inline-flex" variant="premium">
               <a href="/#contact" onClick={(event) => handleNavClick(event, "contact")}>Tư vấn miễn phí</a>
@@ -150,10 +154,12 @@ export function PremiumHeader() {
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             >
               {navItems.map((item) => {
-                const isActive = active === item.id;
+                const isActive =
+                  active === item.id ||
+                  (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet")));
 
                 return (
-                  <a
+                  <Link
                     className={cn(
                       "relative flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold transition-colors",
                       isActive
@@ -170,20 +176,9 @@ export function PremiumHeader() {
                     ) : (
                       <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
                     )}
-                  </a>
+                  </Link>
                 );
               })}
-              <Link
-                className="flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold text-slate-700 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
-                href="/bai-viet"
-                onClick={() => setOpen(false)}
-              >
-                <span className="flex items-center gap-2">
-                  <FileText className="size-4" />
-                  Bài viết
-                </span>
-                <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
-              </Link>
               <Button asChild className="mt-1 w-full" size="lg" variant="premium">
                 <a
                   href="/#contact"
