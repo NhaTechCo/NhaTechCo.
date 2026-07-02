@@ -54,11 +54,11 @@ export function PremiumHeader() {
     <>
       <ScrollToTopButton />
       <header className="safe-shell fixed left-0 right-0 top-0 z-50 pt-[calc(.7rem+env(safe-area-inset-top))]">
-        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden rounded-full border border-slate-200/70 bg-white/80 px-2.5 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.4)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/65 dark:shadow-[0_24px_90px_-58px_hsl(var(--primary))]">
+        <div className="relative mx-auto flex max-w-6xl items-center justify-between gap-2 overflow-hidden rounded-full border border-slate-200/70 bg-white/80 px-2.5 py-2 shadow-[0_24px_90px_-62px_rgba(15,23,42,.4)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/65 dark:shadow-[0_24px_90px_-58px_rgba(0,0,0,.55)]">
           {/* Hairline gradient trên viền */}
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+            className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-slate-300/70 to-transparent dark:via-white/15"
           />
 
           <a
@@ -66,7 +66,7 @@ export function PremiumHeader() {
             href="/#top"
             onClick={(event) => handleNavClick(event, "top")}
           >
-            <span className="grid size-10 place-items-center rounded-full gradient-brand p-[2px] shadow-[0_12px_34px_-16px_hsl(var(--primary))] transition-transform group-hover:scale-105">
+            <span className="grid size-10 place-items-center rounded-full border border-slate-200 bg-white p-[2px] shadow-sm transition-transform group-hover:scale-105 dark:border-white/15 dark:bg-white/10">
               <img
                 src="/images/logo.png"
                 alt="NhaTech Co. Logo"
@@ -88,7 +88,7 @@ export function PremiumHeader() {
                   className={cn(
                     "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors lg:px-4",
                     isActive
-                      ? "text-white"
+                      ? "text-slate-950 dark:text-white"
                       : "text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
                   )}
                   href={item.href}
@@ -97,7 +97,7 @@ export function PremiumHeader() {
                 >
                   {isActive ? (
                     <motion.span
-                      className="absolute inset-0 rounded-full gradient-brand shadow-[0_10px_28px_-12px_hsl(var(--primary))]"
+                      className="absolute inset-0 rounded-full border border-slate-200 bg-white shadow-sm dark:border-white/15 dark:bg-white/15"
                       layoutId="active-nav-pill"
                       transition={{ type: "spring", stiffness: 360, damping: 34 }}
                     />
@@ -144,7 +144,7 @@ export function PremiumHeader() {
             <motion.nav
               animate={{ y: 0, opacity: 1 }}
               aria-label="Menu trên điện thoại"
-              className="mx-auto grid max-w-md gap-3 rounded-[32px] border border-slate-200/80 bg-white/85 p-4 shadow-[0_28px_100px_-62px_rgba(15,23,42,.42)] dark:border-white/10 dark:bg-white/10 dark:shadow-[0_28px_100px_-50px_hsl(var(--primary))]"
+              className="mx-auto grid max-w-md gap-3 rounded-[32px] border border-slate-200/80 bg-white/85 p-4 shadow-[0_28px_100px_-62px_rgba(15,23,42,.42)] dark:border-white/10 dark:bg-white/10 dark:shadow-[0_28px_100px_-50px_rgba(0,0,0,.6)]"
               exit={{ y: 18, opacity: 0 }}
               initial={{ y: 18, opacity: 0 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
@@ -157,7 +157,7 @@ export function PremiumHeader() {
                     className={cn(
                       "relative flex min-h-14 items-center justify-between rounded-full px-5 text-base font-semibold transition-colors",
                       isActive
-                        ? "bg-white text-cyan-700 shadow-sm border border-slate-200 dark:bg-white/20 dark:text-white dark:border-white/10"
+                        ? "bg-white text-slate-950 shadow-sm border border-slate-200 dark:bg-white/20 dark:text-white dark:border-white/10"
                         : "text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
                     )}
                     href={item.href}
@@ -166,7 +166,7 @@ export function PremiumHeader() {
                   >
                     {item.label}
                     {isActive ? (
-                      <span className="h-2 w-10 rounded-full bg-primary shadow-[0_0_20px_hsl(var(--primary))]" />
+                      <span className="h-2 w-10 rounded-full bg-slate-900 dark:bg-white" />
                     ) : (
                       <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-white/20" />
                     )}
