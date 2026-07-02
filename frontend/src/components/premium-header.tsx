@@ -17,6 +17,7 @@ const navItems = [
   { label: "Quy trình", href: "/#process", id: "process" },
   { label: "Trải nghiệm", href: "/#results", id: "results" },
   { label: "Liên hệ", href: "/#contact", id: "contact" },
+  { label: "Sản phẩm mẫu", href: "/san-pham-mau", id: "products" },
   { label: "Bài viết", href: "/bai-viet", id: "blog" }
 ];
 
@@ -91,12 +92,13 @@ export function PremiumHeader() {
             {navItems.slice(1).map((item) => {
               const isActive =
                 active === item.id ||
-                (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet")));
+                (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet"))) ||
+                (item.id === "products" && Boolean(pathname?.startsWith("/san-pham-mau")));
 
               return (
                 <Link
                   className={cn(
-                    "relative rounded-full px-3.5 py-2 text-sm font-semibold transition-colors lg:px-4",
+                    "relative whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-semibold transition-colors lg:px-3.5 lg:text-sm",
                     isActive
                       ? "text-slate-950 dark:text-white"
                       : "text-slate-600 hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
@@ -156,7 +158,8 @@ export function PremiumHeader() {
               {navItems.map((item) => {
                 const isActive =
                   active === item.id ||
-                  (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet")));
+                  (item.id === "blog" && Boolean(pathname?.startsWith("/bai-viet"))) ||
+                  (item.id === "products" && Boolean(pathname?.startsWith("/san-pham-mau")));
 
                 return (
                   <Link
