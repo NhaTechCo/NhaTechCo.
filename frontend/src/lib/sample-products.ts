@@ -9,7 +9,7 @@ import {
   ShoppingBag,
   type LucideIcon
 } from "lucide-react";
-import type { AiScreen } from "@/components/effects/ai-app-screens";
+import type { AiScreen, Accent } from "@/components/effects/ai-app-screens";
 
 export type ProductFeature = {
   icon: LucideIcon;
@@ -30,6 +30,7 @@ export type SampleProduct = {
   platform: string;
   summary: string;
   featured?: boolean;
+  accent: Accent;
   heroScreens: AiScreen[];
   previewScreen: AiScreen;
   tags: string[];
@@ -47,6 +48,7 @@ export const sampleProducts: SampleProduct[] = [
     category: "Ứng dụng AI · CSKH & Bán hàng",
     platform: "Mobile · iOS & Android",
     featured: true,
+    accent: { from: "hsl(247 84% 62%)", to: "hsl(275 82% 63%)" },
     summary:
       "Ứng dụng di động giúp doanh nghiệp tự động chăm sóc khách hàng bằng AI: trả lời tức thì, tư vấn sản phẩm, gộp hội thoại từ Zalo · Messenger · Website và chốt đơn ngay trong khung chat. Nhân viên chỉ cần duyệt lại — tiết kiệm thời gian, tăng tỷ lệ chốt.",
     heroScreens: ["inbox", "chat", "order"],
@@ -93,6 +95,7 @@ export const sampleProducts: SampleProduct[] = [
       "Khách tự đặt lịch trên điện thoại, AI nhắc hẹn tự động, giảm hẳn trống lịch và quên hẹn.",
     category: "Ứng dụng di động · Đặt lịch",
     platform: "Mobile · iOS & Android",
+    accent: { from: "hsl(334 82% 60%)", to: "hsl(352 84% 62%)" },
     summary:
       "Ứng dụng đặt lịch cho spa, salon, phòng khám: khách chọn dịch vụ và khung giờ ngay trên điện thoại, hệ thống tự nhắc lịch và chăm sóc lại khách cũ bằng AI.",
     heroScreens: ["booking", "chat"],
@@ -126,6 +129,7 @@ export const sampleProducts: SampleProduct[] = [
       "Bán hàng, quản lý tồn kho và doanh thu trên cùng một app — gọn gàng, realtime.",
     category: "Phần mềm quản lý · Bán hàng",
     platform: "Mobile · Máy tính",
+    accent: { from: "hsl(160 78% 41%)", to: "hsl(182 72% 42%)" },
     summary:
       "Giải pháp quản lý bán hàng cho cửa hàng và quán: thu ngân nhanh, đồng bộ tồn kho, theo dõi doanh thu và khách hàng thân thiết — dùng được trên cả điện thoại và máy tính.",
     heroScreens: ["pos", "analytics"],

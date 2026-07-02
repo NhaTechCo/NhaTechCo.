@@ -1,17 +1,17 @@
 import {
   BadgeCheck,
-  Bot,
   Calendar,
   CheckCircle2,
   CreditCard,
   MapPin,
-  MessageCircle,
   Phone,
   Search,
   Send,
   Sparkles,
   Star
 } from "lucide-react";
+import type { CSSProperties } from "react";
+import { AnimatedBars, AnimatedMeter } from "@/components/effects/animated-bars";
 import { cn } from "@/lib/utils";
 
 export type AiScreen =
@@ -22,18 +22,28 @@ export type AiScreen =
   | "booking"
   | "pos";
 
-const line = "rounded-full bg-slate-200/90 dark:bg-white/15";
+export type Accent = { from: string; to: string };
 
-/** Khung điện thoại + màn hình app dựng bằng code (nét, theo theme). */
+function brandStyle(accent?: Accent): CSSProperties | undefined {
+  if (!accent) return undefined;
+  return { "--brand": accent.from, "--brand2": accent.to } as CSSProperties;
+}
+
+/** Khung điện thoại + màn hình app dựng bằng code (nét, theo theme, màu theo sản phẩm). */
 export function AiPhone({
   screen,
+  accent,
   className
 }: {
   screen: AiScreen;
+  accent?: Accent;
   className?: string;
 }) {
   return (
-    <div className={cn("phone-frame w-[224px] sm:w-[248px]", className)}>
+    <div
+      className={cn("phone-frame w-[224px] sm:w-[248px]", className)}
+      style={brandStyle(accent)}
+    >
       <div className="phone-screen aspect-[9/19]">
         <div className="phone-island" />
         <div className="flex h-full flex-col px-3.5 pb-3 pt-8 text-slate-900 dark:text-white">
@@ -49,6 +59,24 @@ export function AiPhone({
   );
 }
 
+function BrandLogo({ className }: { className?: string }) {
+  return (
+    <span
+      className={cn(
+        "grid shrink-0 place-items-center rounded-xl bg-white shadow-sm ring-1 ring-black/5 dark:ring-white/10",
+        className
+      )}
+    >
+      {/* Logo NhaTech gắn vào app mẫu */}
+      <img
+        src="/images/logo.png"
+        alt="NhaTech"
+        className="size-[70%] object-contain"
+      />
+    </span>
+  );
+}
+
 function AppHeader({
   title,
   subtitle,
@@ -60,9 +88,7 @@ function AppHeader({
 }) {
   return (
     <div className="mb-3 flex items-center gap-2.5 border-b border-slate-100 pb-2.5 dark:border-white/10">
-      <span className="grid size-8 place-items-center rounded-xl bg-primary text-white">
-        <Bot className="size-4" />
-      </span>
+      <BrandLogo className="size-8" />
       <div className="min-w-0 flex-1">
         <p className="truncate text-[11px] font-bold leading-tight">{title}</p>
         {subtitle && (
@@ -73,7 +99,7 @@ function AppHeader({
         )}
       </div>
       {ai && (
-        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[8px] font-bold text-primary">
+        <span className="brand-soft brand-text rounded-full px-2 py-0.5 text-[8px] font-bold">
           AI
         </span>
       )}
@@ -89,16 +115,15 @@ function ChatScreen() {
         <div className="max-w-[78%] self-start rounded-2xl rounded-bl-sm bg-slate-100 px-2.5 py-1.5 text-[10px] leading-snug text-slate-700 dark:bg-white/[0.08] dark:text-slate-200">
           Áo này còn size M không shop?
         </div>
-        <div className="max-w-[85%] self-end rounded-2xl rounded-br-sm bg-primary px-2.5 py-1.5 text-[10px] leading-snug text-white">
+        <div className="brand-bg max-w-[85%] self-end rounded-2xl rounded-br-sm px-2.5 py-1.5 text-[10px] leading-snug text-white">
           Dạ còn ạ! Áo thun ABC size M đang sẵn hàng, mình gửi mẫu nha 👇
         </div>
-        {/* thẻ gợi ý sản phẩm */}
         <div className="self-end w-[85%] overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900">
           <div className="flex gap-2 p-2">
-            <span className="size-11 shrink-0 rounded-lg bg-gradient-to-br from-primary/25 to-accent/15" />
+            <span className="brand-grad-soft size-11 shrink-0 rounded-lg" />
             <div className="min-w-0 flex-1">
               <p className="truncate text-[9px] font-bold">Áo thun ABC — Trắng</p>
-              <p className="text-[10px] font-extrabold text-primary">199.000đ</p>
+              <p className="brand-text text-[10px] font-extrabold">199.000đ</p>
               <div className="mt-0.5 flex items-center gap-0.5 text-amber-400">
                 {[0, 1, 2, 3, 4].map((i) => (
                   <Star className="size-2 fill-current" key={i} />
@@ -107,7 +132,7 @@ function ChatScreen() {
               </div>
             </div>
           </div>
-          <button className="w-full bg-primary py-1 text-[9px] font-bold text-white">
+          <button className="brand-bg w-full py-1 text-[9px] font-bold text-white">
             Đặt mua ngay
           </button>
         </div>
@@ -115,7 +140,7 @@ function ChatScreen() {
           {["Còn màu nào?", "Phí ship?", "Đặt hàng"].map((q) => (
             <span
               key={q}
-              className="rounded-full border border-primary/25 bg-primary/5 px-2 py-0.5 text-[8px] font-semibold text-primary"
+              className="brand-soft brand-text brand-border rounded-full border px-2 py-0.5 text-[8px] font-semibold"
             >
               {q}
             </span>
@@ -123,9 +148,9 @@ function ChatScreen() {
         </div>
       </div>
       <div className="mt-2 flex items-center gap-2 rounded-full bg-slate-100 px-2.5 py-1.5 dark:bg-white/[0.06]">
-        <Sparkles className="size-3 text-primary" />
+        <Sparkles className="brand-text size-3" />
         <span className="flex-1 text-[9px] text-slate-400">AI đang soạn trả lời…</span>
-        <span className="grid size-5 place-items-center rounded-full bg-primary text-white">
+        <span className="brand-bg grid size-5 place-items-center rounded-full text-white">
           <Send className="size-2.5" />
         </span>
       </div>
@@ -153,7 +178,7 @@ function InboxScreen() {
             key={r.name}
             className="flex items-center gap-2 rounded-xl border border-slate-100 bg-white p-2 dark:border-white/10 dark:bg-slate-900/60"
           >
-            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary/25 to-accent/15 text-[9px] font-bold text-primary">
+            <span className="brand-grad-soft brand-text grid size-8 shrink-0 place-items-center rounded-full text-[9px] font-bold">
               {r.name.split(" ").slice(-1)[0][0]}
             </span>
             <div className="min-w-0 flex-1">
@@ -191,12 +216,12 @@ function OrderScreen() {
       <div className="flex flex-1 flex-col gap-2 overflow-hidden">
         <div className="rounded-xl border border-slate-100 bg-white p-2.5 dark:border-white/10 dark:bg-slate-900/60">
           <div className="flex items-center gap-2">
-            <span className="size-9 rounded-lg bg-gradient-to-br from-primary/25 to-accent/15" />
+            <span className="brand-grad-soft size-9 rounded-lg" />
             <div className="flex-1">
               <p className="text-[9.5px] font-bold">Áo thun ABC — Trắng, M</p>
               <p className="text-[8px] text-slate-400">Số lượng: 2</p>
             </div>
-            <p className="text-[10px] font-extrabold text-primary">398k</p>
+            <p className="brand-text text-[10px] font-extrabold">398k</p>
           </div>
         </div>
         <div className="rounded-xl bg-slate-50 p-2.5 dark:bg-white/[0.05]">
@@ -210,11 +235,11 @@ function OrderScreen() {
           <InfoRow icon={Phone} text="0901 234 567" />
           <InfoRow icon={MapPin} text="12 Lê Lợi, Q.1, TP.HCM" />
         </div>
-        <p className="flex items-center gap-1 text-[8px] font-medium text-primary">
+        <p className="brand-text flex items-center gap-1 text-[8px] font-medium">
           <Sparkles className="size-2.5" /> AI tự điền từ hội thoại
         </p>
       </div>
-      <button className="mt-2 w-full rounded-full bg-primary py-2 text-[10px] font-bold text-white shadow-md shadow-primary/30">
+      <button className="brand-bg brand-shadow mt-2 w-full rounded-full py-2 text-[10px] font-bold text-white">
         Xác nhận đơn hàng
       </button>
     </>
@@ -227,7 +252,7 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
       <span className={cn("text-[9px]", bold ? "font-bold" : "text-slate-500 dark:text-slate-400")}>
         {label}
       </span>
-      <span className={cn("text-[9.5px]", bold ? "font-extrabold text-primary" : "font-semibold")}>
+      <span className={cn("text-[9.5px]", bold ? "brand-text font-extrabold" : "font-semibold")}>
         {value}
       </span>
     </div>
@@ -237,7 +262,7 @@ function Row({ label, value, bold }: { label: string; value: string; bold?: bool
 function InfoRow({ icon: Icon, text }: { icon: typeof Phone; text: string }) {
   return (
     <div className="flex items-center gap-1.5 py-0.5">
-      <Icon className="size-3 text-primary" />
+      <Icon className="brand-text size-3" />
       <span className="text-[9px] font-medium text-slate-600 dark:text-slate-300">{text}</span>
     </div>
   );
@@ -256,15 +281,11 @@ function AnalyticsScreen() {
           <p className="mb-1.5 text-[8.5px] font-semibold text-slate-500 dark:text-slate-400">
             Đơn chốt 7 ngày
           </p>
-          <div className="flex h-16 items-end gap-1.5">
-            {[45, 62, 50, 78, 66, 90, 72].map((h, i) => (
-              <span
-                key={i}
-                className={cn("flex-1 rounded-t", i === 5 ? "bg-primary" : "bg-primary/30")}
-                style={{ height: `${h * 0.6}px` }}
-              />
-            ))}
-          </div>
+          <AnimatedBars
+            values={[45, 62, 50, 78, 66, 92, 72]}
+            highlight={5}
+            className="h-16"
+          />
         </div>
         <div className="rounded-xl border border-slate-100 bg-white p-2.5 dark:border-white/10 dark:bg-slate-900/60">
           <div className="mb-1 flex items-center justify-between">
@@ -273,9 +294,11 @@ function AnalyticsScreen() {
             </span>
             <span className="text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400">96%</span>
           </div>
-          <div className="h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
-            <span className="block h-full w-[96%] rounded-full bg-emerald-500" />
-          </div>
+          <AnimatedMeter
+            value={96}
+            className="bg-slate-100 dark:bg-white/10"
+            barClassName="bg-emerald-500"
+          />
         </div>
       </div>
     </>
@@ -299,7 +322,7 @@ function BookingScreen() {
       <AppHeader title="Đặt lịch Spa" subtitle="AI nhắc lịch tự động" />
       <div className="flex flex-1 flex-col gap-2 overflow-hidden">
         <div className="flex items-center gap-1.5">
-          <Calendar className="size-3.5 text-primary" />
+          <Calendar className="brand-text size-3.5" />
           <span className="text-[9px] font-semibold">Tháng 7, 2026</span>
         </div>
         <div className="flex gap-1.5">
@@ -308,7 +331,7 @@ function BookingScreen() {
               key={d}
               className={cn(
                 "flex flex-1 flex-col items-center rounded-lg py-1.5",
-                i === 2 ? "bg-primary text-white" : "bg-slate-100 dark:bg-white/[0.06]"
+                i === 2 ? "brand-bg text-white" : "bg-slate-100 dark:bg-white/[0.06]"
               )}
             >
               <span className="text-[7px] opacity-70">{d}</span>
@@ -324,7 +347,7 @@ function BookingScreen() {
               className={cn(
                 "rounded-lg border py-1.5 text-center text-[9px] font-semibold",
                 i === 1
-                  ? "border-primary bg-primary/10 text-primary"
+                  ? "brand-border brand-soft brand-text"
                   : "border-slate-200 text-slate-600 dark:border-white/10 dark:text-slate-300"
               )}
             >
@@ -334,10 +357,10 @@ function BookingScreen() {
         </div>
         <div className="mt-auto rounded-xl bg-slate-50 p-2.5 dark:bg-white/[0.05]">
           <p className="text-[9px] font-bold">Chăm sóc da mặt · 60 phút</p>
-          <p className="text-[10px] font-extrabold text-primary">350.000đ</p>
+          <p className="brand-text text-[10px] font-extrabold">350.000đ</p>
         </div>
       </div>
-      <button className="mt-2 w-full rounded-full bg-primary py-2 text-[10px] font-bold text-white shadow-md shadow-primary/30">
+      <button className="brand-bg brand-shadow mt-2 w-full rounded-full py-2 text-[10px] font-bold text-white">
         Xác nhận đặt lịch
       </button>
     </>
@@ -360,13 +383,13 @@ function PosScreen() {
             <div
               key={it.n}
               className={cn(
-                "rounded-lg border p-1.5 dark:border-white/10",
-                i === 0 ? "border-primary bg-primary/5" : "border-slate-200"
+                "rounded-lg border p-1.5",
+                i === 0 ? "brand-border brand-soft" : "border-slate-200 dark:border-white/10"
               )}
             >
-              <span className="mb-1 block h-9 rounded-md bg-gradient-to-br from-primary/20 to-accent/12" />
+              <span className="brand-grad-soft mb-1 block h-9 rounded-md" />
               <p className="truncate text-[8.5px] font-semibold">{it.n}</p>
-              <p className="text-[9px] font-extrabold text-primary">{it.p}</p>
+              <p className="brand-text text-[9px] font-extrabold">{it.p}</p>
             </div>
           ))}
         </div>
@@ -377,7 +400,7 @@ function PosScreen() {
           <Row label="Tổng" value="83.000đ" bold />
         </div>
       </div>
-      <button className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full bg-primary py-2 text-[10px] font-bold text-white shadow-md shadow-primary/30">
+      <button className="brand-bg brand-shadow mt-2 flex w-full items-center justify-center gap-1.5 rounded-full py-2 text-[10px] font-bold text-white">
         <CreditCard className="size-3.5" /> Thanh toán
       </button>
     </>
@@ -385,11 +408,17 @@ function PosScreen() {
 }
 
 /** Cụm điện thoại xoè nhiều màn hình cho hero trang chi tiết. */
-export function AiPhoneCluster({ screens }: { screens: AiScreen[] }) {
+export function AiPhoneCluster({
+  screens,
+  accent
+}: {
+  screens: AiScreen[];
+  accent?: Accent;
+}) {
   const list = screens.slice(0, 3);
   return (
     <div className="device-stage relative mx-auto flex min-h-[420px] items-center justify-center md:min-h-[520px]">
-      <div className="device-glow" />
+      <div className="device-glow" style={brandStyle(accent)} />
       {list.map((s, i) => {
         const pos =
           list.length === 1
@@ -400,12 +429,12 @@ export function AiPhoneCluster({ screens }: { screens: AiScreen[] }) {
         const scale = list.length > 1 && i !== 1 ? "scale-90" : "";
         return (
           <div key={s} className={cn(pos, scale)}>
-            <AiPhone screen={s} />
+            <AiPhone screen={s} accent={accent} />
           </div>
         );
       })}
       <span className="pointer-events-none absolute right-2 top-6 z-30 hidden items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/90 px-3 py-1.5 text-xs font-bold text-slate-700 shadow-lg backdrop-blur-md dark:border-white/10 dark:bg-slate-950/80 dark:text-slate-200 md:flex">
-        <MessageCircle className="size-3.5 text-primary" /> AI trả lời 24/7
+        <BrandLogo className="size-4" /> AI trả lời 24/7
       </span>
     </div>
   );

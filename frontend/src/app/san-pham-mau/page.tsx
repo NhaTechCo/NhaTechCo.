@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { ArrowUpRight, LayoutGrid, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -59,6 +60,12 @@ export default function SampleProductsPage() {
             <StaggerItem className="h-full" key={product.slug}>
               <Link
                 href={`/san-pham-mau/${product.slug}`}
+                style={
+                  {
+                    "--brand": product.accent.from,
+                    "--brand2": product.accent.to
+                  } as CSSProperties
+                }
                 className={cn(
                   surfaceCard,
                   "group flex h-full flex-col overflow-hidden p-0 transition-transform duration-300 hover:-translate-y-1.5"
@@ -68,17 +75,17 @@ export default function SampleProductsPage() {
                 <div className="relative flex h-64 items-end justify-center overflow-hidden bg-gradient-to-b from-slate-100/80 to-white dark:from-white/[0.06] dark:to-transparent">
                   <div className="animated-grid opacity-40" />
                   {product.featured && (
-                    <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-white shadow-lg shadow-primary/30">
+                    <span className="brand-bg brand-shadow absolute left-4 top-4 z-10 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold text-white">
                       <Sparkles className="size-3" /> Nổi bật
                     </span>
                   )}
                   <div className="relative z-[1] origin-bottom translate-y-8 scale-[0.82] transition-transform duration-500 group-hover:translate-y-6">
-                    <AiPhone screen={product.previewScreen} />
+                    <AiPhone screen={product.previewScreen} accent={product.accent} />
                   </div>
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
-                  <p className={cn("text-xs font-bold uppercase tracking-wider text-primary")}>
+                  <p className="brand-text text-xs font-bold uppercase tracking-wider">
                     {product.category}
                   </p>
                   <h2 className={cn("mt-2 text-xl font-bold leading-tight", headingText)}>
@@ -97,7 +104,7 @@ export default function SampleProductsPage() {
                       </span>
                     ))}
                   </div>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-primary">
+                  <span className="brand-text mt-5 inline-flex items-center gap-1.5 text-sm font-bold">
                     Xem chi tiết
                     <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>

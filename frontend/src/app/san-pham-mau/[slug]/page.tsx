@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { ArrowLeft, ArrowUpRight, Check, Smartphone } from "lucide-react";
 import Link from "next/link";
@@ -81,8 +82,13 @@ export default async function SampleProductPage({ params }: PageProps) {
     notFound();
   }
 
+  const brandVars = {
+    "--brand": product.accent.from,
+    "--brand2": product.accent.to
+  } as CSSProperties;
+
   return (
-    <main className="relative overflow-hidden text-foreground">
+    <main className="relative overflow-hidden text-foreground" style={brandVars}>
       <CosmicBackground />
 
       {/* Hero */}
@@ -123,7 +129,7 @@ export default async function SampleProductPage({ params }: PageProps) {
               </div>
             </div>
           }
-          right={<AiPhoneCluster screens={product.heroScreens} />}
+          right={<AiPhoneCluster screens={product.heroScreens} accent={product.accent} />}
         />
       </section>
 
@@ -140,7 +146,7 @@ export default async function SampleProductPage({ params }: PageProps) {
           {product.metrics.map((m) => (
             <StaggerItem key={m.label}>
               <div className={cn(surfaceCard, "p-5 text-center sm:text-left")}>
-                <strong className="block text-3xl font-extrabold gradient-brand-text">
+                <strong className="brand-text-grad block text-3xl font-extrabold">
                   {m.value}
                 </strong>
                 <span className={cn("mt-1 block text-sm font-medium", mutedText)}>
@@ -171,7 +177,7 @@ export default async function SampleProductPage({ params }: PageProps) {
                 className="grid items-center gap-10 lg:grid-cols-2"
                 left={
                   <div className={cn(flip && "lg:order-2")}>
-                    <span className="icon-tile size-12 rounded-2xl">
+                    <span className="brand-tile size-12 rounded-2xl">
                       <Icon className="size-6" />
                     </span>
                     <h2 className={cn("mt-5 text-2xl font-bold leading-tight md:text-3xl", headingText)}>
@@ -186,7 +192,7 @@ export default async function SampleProductPage({ params }: PageProps) {
                       <div className="device-stage relative">
                         <div className="device-glow" />
                         <div className="relative">
-                          <AiPhone screen={feature.screen} />
+                          <AiPhone screen={feature.screen} accent={product.accent} />
                         </div>
                       </div>
                     </div>
