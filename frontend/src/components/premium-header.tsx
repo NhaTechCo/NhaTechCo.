@@ -73,9 +73,7 @@ export function PremiumHeader() {
                 className="size-full rounded-full bg-white object-contain p-1"
               />
             </span>
-            <span className="hidden sm:inline">
-              NhaTech<span className="gradient-brand-text"> Co.</span>
-            </span>
+            <span className="hidden sm:inline">NhaTech Co.</span>
           </a>
 
           <nav
